@@ -78,6 +78,7 @@ public class BeginCommand implements ICommand {
                 player.setPosition(playerPos.getX(), playerPos.getY() + 2, playerPos.getZ());
                 lootCommand.execute(server, sender, new String[] {playerName, "startup"});
                 homeCommand.setHomeForPlayer(playerName, new Position(playerPos.getX()-1, playerPos.getY() + 1, playerPos.getZ()));
+                homeCommand.execute(server,sender,new String[]{});
             } else {
                 player.setGameType(GameType.SPECTATOR);
                 sender.sendMessage(new TextComponentString("You are now spectating. Move to the desired location and " +
