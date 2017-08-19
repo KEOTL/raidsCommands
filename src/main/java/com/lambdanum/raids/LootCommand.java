@@ -44,7 +44,7 @@ public class LootCommand implements ICommand {
         String playerName = args[0];
         String lootTable = args[1];
         try {
-            String lootJson = HttpHelper.get(URL + lootTable);
+            String lootJson = HttpHelper.get(URL + lootTable + "?username=" + playerName);
             LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
             for (LootItem item : lootItems) {
                 EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);
