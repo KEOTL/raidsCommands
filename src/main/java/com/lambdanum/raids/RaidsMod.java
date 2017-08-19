@@ -20,5 +20,6 @@ public class RaidsMod {
         event.registerServerCommand(new LootCommand());
         event.registerServerCommand(new BeginCommand());
         event.registerServerCommand(new HomeCommand());
+        event.registerServerCommand(new DailyCommand());
     }
 }
