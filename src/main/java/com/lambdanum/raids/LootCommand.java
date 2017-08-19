@@ -57,11 +57,6 @@ public class LootCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender.canUseCommand(3,"")) {
-            System.out.println("Can use command");
-        } else {
-            System.out.println("Cannot use command");
-        }
         return sender.canUseCommand(3,"");
     }
 

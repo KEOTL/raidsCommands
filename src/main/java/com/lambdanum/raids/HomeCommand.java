@@ -37,10 +37,8 @@ public class HomeCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
-            player.setVelocity(0,0,0);
 
             Position playerHome = getHomeForPlayer(player.getName());
-            //player.setPosition(playerHome.getX(), playerHome.getY(), playerHome.getZ());
             player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
         }
     }

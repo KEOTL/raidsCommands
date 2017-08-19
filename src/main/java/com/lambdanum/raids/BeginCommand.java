@@ -74,7 +74,7 @@ public class BeginCommand implements ICommand {
                 }
                 setUserAlreadyGeneratedIsland(playerName);
                 player.setGameType(GameType.SURVIVAL);
-                player.setVelocity(0,0,0);
+
                 player.setPosition(playerPos.getX(), playerPos.getY() + 2, playerPos.getZ());
                 lootCommand.execute(server, sender, new String[] {playerName, "startup"});
                 homeCommand.setHomeForPlayer(playerName, new Position(playerPos.getX()-1, playerPos.getY() + 1, playerPos.getZ()));
