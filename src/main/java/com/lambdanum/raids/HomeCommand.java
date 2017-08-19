@@ -1,12 +1,11 @@
 package com.lambdanum.raids;
 
 import com.google.gson.Gson;
+import com.lambdanum.raids.model.Position;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
@@ -14,20 +13,19 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class LootCommand implements ICommand {
+public class HomeCommand implements ICommand {
 
-    private static final String URL = "https://boiling-forest-57763.herokuapp.com/loot/";
-
+    private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
     private Gson gson = new Gson();
 
     @Override
     public String getName() {
-        return "loot";
+        return "home";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "loot";
+        return "home";
     }
 
     @Override
@@ -37,19 +35,29 @@ public class LootCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length < 2) {
-            return;
-        }
+        if (sender instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) sender;
+            player.setVelocity(0,0,0);
 
-        String playerName = args[0];
-        String lootTable = args[1];
+            Position playerHome = getHomeForPlayer(player.getName());
+            //player.setPosition(playerHome.getX(), playerHome.getY(), playerHome.getZ());
+            player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
+        }
+    }
+
+    private Position getHomeForPlayer(String username) {
         try {
-            String lootJson = HttpHelper.get(URL + lootTable);
-            LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
-            for (LootItem item : lootItems) {
-                EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);
-                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.getMinecraftId()),item.getAmount()));
-            }
+            String jsonPosition = HttpHelper.get(API_URL + username);
+            return gson.fromJson(jsonPosition,Position.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Position();
+    }
+
+    public void setHomeForPlayer(String username, Position homePosition) {
+        try {
+            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.getX(),homePosition.getY(),homePosition.getZ()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,17 +65,15 @@ public class LootCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender.canUseCommand(3,"")) {
-            System.out.println("Can use command");
-        } else {
-            System.out.println("Cannot use command");
+        if (sender instanceof EntityPlayer) {
+            return ((EntityPlayer)sender).dimension == 0;
         }
-        return sender.canUseCommand(3,"");
+        return false;
     }
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

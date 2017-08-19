@@ -5,13 +5,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpGet {
+public class HttpHelper {
 
-    public static String getHTML(String urlToRead) throws Exception {
+    public static String get(String url) throws Exception {
+        return doHttp(url, "GET");
+    }
+
+    public static String post(String url) throws Exception {
+        return doHttp(url, "POST");
+    }
+
+    private static String doHttp(String urlToRead, String method) throws Exception {
         StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+        conn.setRequestMethod(method);
         BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String line;
         while ((line = rd.readLine()) != null) {

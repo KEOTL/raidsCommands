@@ -19,5 +19,6 @@ public class RaidsMod {
     public void serverLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new LootCommand());
         event.registerServerCommand(new BeginCommand());
+        event.registerServerCommand(new HomeCommand());
     }
 }
