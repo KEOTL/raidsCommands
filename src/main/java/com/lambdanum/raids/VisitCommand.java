@@ -1,6 +1,5 @@
 package com.lambdanum.raids;
 
-import com.google.gson.Gson;
 import com.lambdanum.raids.model.Position;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -13,19 +12,18 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeCommand implements ICommand {
+public class VisitCommand implements ICommand {
 
-    private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
-    private Gson gson = new Gson();
+    HomeCommand homeCommand = new HomeCommand();
 
     @Override
     public String getName() {
-        return "home";
+        return "visit";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "home";
+        return "/visit <player name>";
     }
 
     @Override
@@ -35,29 +33,13 @@ public class HomeCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
-
-            Position playerHome = getHomeForPlayer(player.getName());
+        if (!(sender instanceof EntityPlayer)) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) sender;
+        if (args.length == 1) {
+            Position playerHome = homeCommand.getHomeForPlayer(args[0]);
             player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
-        }
-    }
-
-    public Position getHomeForPlayer(String username) {
-        try {
-            String jsonPosition = HttpHelper.get(API_URL + username);
-            return gson.fromJson(jsonPosition,Position.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Position();
-    }
-
-    public void setHomeForPlayer(String username, Position homePosition) {
-        try {
-            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.getX(),homePosition.getY(),homePosition.getZ()));
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

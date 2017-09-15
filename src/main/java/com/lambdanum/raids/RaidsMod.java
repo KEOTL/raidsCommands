@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = "raids", version = "0.0.1")
+@Mod(modid = "raids", version = "0.0.2")
 @Mod.EventBusSubscriber
 public class RaidsMod {
 
@@ -21,5 +21,7 @@ public class RaidsMod {
         event.registerServerCommand(new BeginCommand());
         event.registerServerCommand(new HomeCommand());
         event.registerServerCommand(new DailyCommand());
+        event.registerServerCommand(new VisitCommand());
+        event.registerServerCommand(new SetHomeCommand());
     }
 }
