@@ -1,13 +1,9 @@
 package com.lambdanum.raids.controller;
 
-import com.lambdanum.raids.util.ComponentLocator;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class RaidControllerFactory {
-
-    public static final RaidControllerFactory INSTANCE = new RaidControllerFactory((RaidRepository)ComponentLocator.INSTANCE.getComponent(RaidRepository.class));
 
     private Map<String, RaidController> raidControllers;
     private RaidRepository raidRepository;

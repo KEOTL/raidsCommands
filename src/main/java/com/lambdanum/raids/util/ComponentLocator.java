@@ -1,5 +1,6 @@
 package com.lambdanum.raids.util;
 
+import com.lambdanum.raids.controller.InMemoryRaidRepository;
 import com.lambdanum.raids.controller.RaidControllerFactory;
 import com.lambdanum.raids.controller.RaidRepository;
 import com.lambdanum.raids.controller.RestRaidRepository;
@@ -31,15 +32,14 @@ public class ComponentLocator {
     }
 
     protected void configure() {
-        bind(RaidControllerFactory.class).to(RaidControllerFactory.class);
-        bind(RestRaidRepository.class).to(RaidRepository.class);
+        bind(InMemoryRaidRepository.class).to(RaidRepository.class);
+        bind(new RaidControllerFactory((RaidRepository) getComponent(RaidRepository.class))).to(RaidControllerFactory.class);
 
     }
 
     private innerIntermediate bind(Object type) {
         return new innerIntermediate(type);
     }
-
     private class innerIntermediate {
         private Object type;
 
