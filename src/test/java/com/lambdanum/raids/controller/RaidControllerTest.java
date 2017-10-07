@@ -2,6 +2,8 @@ package com.lambdanum.raids.controller;
 
 import static junit.framework.TestCase.assertFalse;
 
+import com.lambdanum.raids.model.Region;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,10 +13,11 @@ public class RaidControllerTest {
 
     private static final int DIMENSION = 3;
     private static final String RAID_NAME = "raid";
+    private static final Region REGION = new Region();
 
     @Before
     public void initializeRaidsController() {
-        raidController = new RaidController(RAID_NAME, DIMENSION);
+        raidController = new RaidController(RAID_NAME, DIMENSION, REGION);
     }
 
     @Test

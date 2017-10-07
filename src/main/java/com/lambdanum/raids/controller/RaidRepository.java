@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface RaidRepository {
 
-    List<RaidDto> getRaids();
+    List<Raid> getRaids();
 
 }

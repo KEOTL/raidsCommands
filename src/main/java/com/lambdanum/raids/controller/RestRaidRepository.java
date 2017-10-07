@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RestRaidRepository implements RaidRepository {
     @Override
-    public List<RaidDto> getRaids() {
+    public List<Raid> getRaids() {
         return Collections.emptyList();
     }
 }

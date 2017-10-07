@@ -1,20 +1,20 @@
 package com.lambdanum.raids.controller;
 
-import java.util.HashMap;
+import com.lambdanum.raids.model.Region;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class InMemoryRaidRepository implements RaidRepository {
 
-    private Map<String, Integer> raids = new HashMap<>();
+    private List<Raid> raids = new ArrayList<>();
 
     public InMemoryRaidRepository() {
-        raids.put("test", 30001);
+        raids.add(new Raid("test", 30001, new Region()));
     }
 
     @Override
-    public List<RaidDto> getRaids() {
-        return raids.keySet().stream().map(name -> new RaidDto(name,raids.get(name))).collect(Collectors.toList());
+    public List<Raid> getRaids() {
+        return raids;
     }
 }

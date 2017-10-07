@@ -1,5 +1,7 @@
 package com.lambdanum.raids.controller;
 
+import com.lambdanum.raids.model.Region;
+
 public class RaidController {
 
     private final String raidName;
@@ -7,15 +9,15 @@ public class RaidController {
 
     private boolean active = false;
 
-    public RaidController(RaidDto raidDto) {
-        this.raidName = raidDto.name;
-        this.dimension = raidDto.dimension;
+    public RaidController(Raid raid) {
+        this.raidName = raid.name;
+        this.dimension = raid.dimension;
 
         System.out.println("Initialized raidController on dimension :" + dimension);
     }
 
-    public RaidController(String raidName, int dimension) {
-        this(new RaidDto(raidName,dimension));
+    public RaidController(String raidName, int dimension, Region region) {
+        this(new Raid(raidName,dimension, region));
     }
 
     public boolean isRaidActive() {
