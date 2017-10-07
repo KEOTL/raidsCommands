@@ -1,6 +1,5 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.model.Position;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -12,18 +11,18 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class SetHomeCommand implements ICommand {
+public class DailyCommand implements ICommand {
 
-    private HomeCommand homeCommand = new HomeCommand();
+    private LootCommand lootCommand = new LootCommand();
 
     @Override
     public String getName() {
-        return "sethome";
+        return "daily";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/sethome";
+        return "daily";
     }
 
     @Override
@@ -33,25 +32,15 @@ public class SetHomeCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer && args.length == 0) {
-            EntityPlayer player = (EntityPlayer) sender;
-            homeCommand.setHomeForPlayer(player.getName(), new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
-        }
-        if (sender instanceof EntityPlayer && args.length == 1) {
-            EntityPlayer player = (EntityPlayer) sender;
-            homeCommand.setHomeForPlayer(args[0], new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
+        if (sender instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer)sender;
+            lootCommand.execute(server,sender, new String[]{player.getName(),"daily"});
         }
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender.canUseCommand(3,"")) {
-            return true;
-        }
-        if (sender instanceof EntityPlayer) {
-            return ((EntityPlayer )sender).dimension == 0;
-        }
-        return false;
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
 import com.google.gson.Gson;
+import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.User;
 import net.minecraft.command.CommandException;

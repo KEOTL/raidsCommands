@@ -1,6 +1,5 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
-import com.google.gson.Gson;
 import com.lambdanum.raids.model.Position;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -13,19 +12,18 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeCommand implements ICommand {
+public class SetHomeCommand implements ICommand {
 
-    private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
-    private Gson gson = new Gson();
+    private HomeCommand homeCommand = new HomeCommand();
 
     @Override
     public String getName() {
-        return "home";
+        return "sethome";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "home";
+        return "/sethome";
     }
 
     @Override
@@ -35,36 +33,23 @@ public class HomeCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
+        if (sender instanceof EntityPlayer && args.length == 0) {
             EntityPlayer player = (EntityPlayer) sender;
-
-            Position playerHome = getHomeForPlayer(player.getName());
-            player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
+            homeCommand.setHomeForPlayer(player.getName(), new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
         }
-    }
-
-    public Position getHomeForPlayer(String username) {
-        try {
-            String jsonPosition = HttpHelper.get(API_URL + username);
-            return gson.fromJson(jsonPosition,Position.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Position();
-    }
-
-    public void setHomeForPlayer(String username, Position homePosition) {
-        try {
-            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.getX(),homePosition.getY(),homePosition.getZ()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sender instanceof EntityPlayer && args.length == 1) {
+            EntityPlayer player = (EntityPlayer) sender;
+            homeCommand.setHomeForPlayer(args[0], new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
         }
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        if (sender.canUseCommand(3,"")) {
+            return true;
+        }
         if (sender instanceof EntityPlayer) {
-            return ((EntityPlayer)sender).dimension == 0;
+            return ((EntityPlayer )sender).dimension == 0;
         }
         return false;
     }

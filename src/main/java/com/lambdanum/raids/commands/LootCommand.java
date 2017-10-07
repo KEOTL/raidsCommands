@@ -1,9 +1,15 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
+
+import com.google.gson.Gson;
+import com.lambdanum.raids.HttpHelper;
+import com.lambdanum.raids.LootItem;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
@@ -11,18 +17,20 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class DailyCommand implements ICommand {
+public class LootCommand implements ICommand {
 
-    private LootCommand lootCommand = new LootCommand();
+    private static final String URL = "https://boiling-forest-57763.herokuapp.com/loot/";
+
+    private Gson gson = new Gson();
 
     @Override
     public String getName() {
-        return "daily";
+        return "loot";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "daily";
+        return "loot";
     }
 
     @Override
@@ -32,20 +40,32 @@ public class DailyCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)sender;
-            lootCommand.execute(server,sender, new String[]{player.getName(),"daily"});
+        if (args.length < 2) {
+            return;
+        }
+
+        String playerName = args[0];
+        String lootTable = args[1];
+        try {
+            String lootJson = HttpHelper.get(URL + lootTable + "?username=" + playerName);
+            LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
+            for (LootItem item : lootItems) {
+                EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);
+                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.getMinecraftId()),item.getAmount()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return true;
+        return sender.canUseCommand(3,"");
     }
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return Collections.emptyList();
+        return null;
     }
 
     @Override
