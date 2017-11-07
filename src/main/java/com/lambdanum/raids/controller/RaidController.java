@@ -2,7 +2,7 @@ package com.lambdanum.raids.controller;
 
 import com.lambdanum.raids.model.Region;
 
-public class RaidController {
+public class RaidController implements ConditionObserver {
 
     private final String raidName;
     private final int dimension;
@@ -24,5 +24,8 @@ public class RaidController {
         return active;
     }
 
-
+    @Override
+    public void notifyOnWatchedCondition() {
+        // Something has happened inside this raid.
+    }
 }

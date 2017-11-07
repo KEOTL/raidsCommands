@@ -1,12 +1,14 @@
 package com.lambdanum.raids.util;
 
 import com.lambdanum.raids.controller.InMemoryRaidRepository;
-import com.lambdanum.raids.controller.RaidControllerFactory;
+import com.lambdanum.raids.controller.RaidControllerProvider;
 import com.lambdanum.raids.controller.RaidRepository;
-import com.lambdanum.raids.controller.RestRaidRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 
 public class ComponentLocator {
 
@@ -33,8 +35,7 @@ public class ComponentLocator {
 
     protected void configure() {
         bind(InMemoryRaidRepository.class).to(RaidRepository.class);
-        bind(new RaidControllerFactory((RaidRepository) getComponent(RaidRepository.class))).to(RaidControllerFactory.class);
-
+        bind(new RaidControllerProvider((RaidRepository) getComponent(RaidRepository.class))).to(RaidControllerProvider.class);
     }
 
     private innerIntermediate bind(Object type) {
