@@ -1,17 +1,15 @@
 package com.lambdanum.raids.controller;
 
-import com.lambdanum.raids.model.Position;
+import com.lambdanum.raids.util.ComponentLocator;
+import com.lambdanum.raids.util.MinecraftBroadcastLogger;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class RaidController implements ConditionObserver {
 
+    private final MinecraftBroadcastLogger logger = ComponentLocator.INSTANCE.get(MinecraftBroadcastLogger.class);
+    private final RegionCloner regionCloner = ComponentLocator.INSTANCE.get(RegionCloner.class);
     private Raid raid;
     private final int dimension;
 
@@ -28,26 +26,15 @@ public class RaidController implements ConditionObserver {
         return active;
     }
 
-    public void initializePlayDimensionMap(MinecraftServer minecraftServer) {
+    public void startMapInitialization(MinecraftServer minecraftServer) {
         new Thread(() -> {
             WorldServer targetWorld = minecraftServer.getWorld(dimension);
             WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
-
-            Position lowerCorner = raid.region.getCorners()[0];
-            Position higherCorner = raid.region.getCorners()[1];
-
-            for (int i = lowerCorner.getX(); i < higherCorner.getX(); i++) {
-                for (int j = lowerCorner.getY(); j < higherCorner.getY(); j++) {
-                    for (int k = lowerCorner.getZ(); k < higherCorner.getZ(); k++) {
-                        BlockPos clonedPosition = new BlockPos(i,j,k);
-                        IBlockState sourceBlock = cleanRaidMap.getBlockState(clonedPosition);
-                        targetWorld.setBlockState(clonedPosition, sourceBlock);
-                    }
-                }
-            }
+            regionCloner.cloneRegionToOtherDimension(cleanRaidMap, targetWorld, raid.region);
+            logger.log("done initializing raid map '" + raid.name + "' on dimension " + dimension);
         }).start();
-
     }
+
     @Override
     public void notifyOnWatchedCondition() {
         // Something has happened inside this raid.

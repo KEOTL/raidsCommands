@@ -5,8 +5,10 @@ import com.lambdanum.raids.commands.DailyCommand;
 import com.lambdanum.raids.commands.HomeCommand;
 import com.lambdanum.raids.commands.LootCommand;
 import com.lambdanum.raids.commands.SetHomeCommand;
+import com.lambdanum.raids.commands.StartRaidCommand;
 import com.lambdanum.raids.commands.TestCommand;
 import com.lambdanum.raids.commands.VisitCommand;
+import com.lambdanum.raids.util.ComponentLocator;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -32,5 +34,6 @@ public class RaidsMod {
         event.registerServerCommand(new VisitCommand());
         event.registerServerCommand(new SetHomeCommand());
         event.registerServerCommand(new TestCommand());
+        event.registerServerCommand(ComponentLocator.INSTANCE.get(StartRaidCommand.class));
     }
 }

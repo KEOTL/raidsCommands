@@ -1,14 +1,12 @@
 package com.lambdanum.raids.model;
 
-import java.util.Iterator;
-
 public class Position {
 
-    private int x = 0;
-    private int y = 0;
-    private int z = 0;
+    public static final Position ORIGIN = new Position(0,0,0);
 
-    public Position() {}
+    public final int x;
+    public final int y;
+    public final int z;
 
     public Position(int x, int y, int z) {
         this.x = x;
@@ -16,28 +14,7 @@ public class Position {
         this.z = z;
     }
 
-    public int getX() {
-        return x;
+    public Position() {
+        this(0,0,0);
     }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getZ() {
-        return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
-    }
-
 }

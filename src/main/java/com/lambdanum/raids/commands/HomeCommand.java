@@ -3,16 +3,18 @@ package com.lambdanum.raids.commands;
 import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.model.Position;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 public class HomeCommand implements ICommand {
 
@@ -40,7 +42,7 @@ public class HomeCommand implements ICommand {
             EntityPlayer player = (EntityPlayer) sender;
 
             Position playerHome = getHomeForPlayer(player.getName());
-            player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
+            player.attemptTeleport(playerHome.x, playerHome.y, playerHome.z);
         }
     }
 
@@ -56,7 +58,7 @@ public class HomeCommand implements ICommand {
 
     public void setHomeForPlayer(String username, Position homePosition) {
         try {
-            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.getX(),homePosition.getY(),homePosition.getZ()));
+            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.x,homePosition.y,homePosition.z));
         } catch (Exception e) {
             e.printStackTrace();
         }

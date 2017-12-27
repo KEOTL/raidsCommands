@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class RaidControllerProvider {
 
-    public static final int PLAY_DIMENSION = 5;
+    public static final int PLAY_DIMENSION = 0;
     private Map<String, RaidController> raidControllers;
     private RaidRepository raidRepository;
 

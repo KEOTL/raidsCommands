@@ -2,16 +2,11 @@ package com.lambdanum.raids.model;
 
 public class Region {
 
-    private Position[] corners;
+    public final Position lowerCorner;
+    public final Position higherCorner;
 
-    public Region() {
-    }
-
-    public Region(Position[] corners) {
-        this.corners = corners;
-    }
-
-    public Position[] getCorners() {
-        return corners;
+    public Region(Position lowerCorner, Position higherCorner) {
+        this.lowerCorner = lowerCorner;
+        this.higherCorner = higherCorner;
     }
 }

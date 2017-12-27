@@ -1,22 +1,18 @@
 package com.lambdanum.raids.util;
 
+import com.lambdanum.raids.commands.StartRaidCommand;
 import com.lambdanum.raids.controller.InMemoryRaidRepository;
 import com.lambdanum.raids.controller.RaidControllerProvider;
 import com.lambdanum.raids.controller.RaidRepository;
+import com.lambdanum.raids.controller.RegionCloner;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.gui.MinecraftServerGui;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
 
 public class ComponentLocator {
 
@@ -50,6 +46,8 @@ public class ComponentLocator {
         bind(RaidControllerProvider.class).to(RaidControllerProvider.class);
         bind(FMLCommonHandler.instance().getMinecraftServerInstance()).to(MinecraftServer.class);
         bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
+        bind(RegionCloner.class).to(RegionCloner.class);
+        bind(StartRaidCommand.class).to(StartRaidCommand.class);
     }
 
     private innerIntermediate bind(Object type) {

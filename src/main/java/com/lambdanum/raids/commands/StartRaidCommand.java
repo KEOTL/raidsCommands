@@ -1,6 +1,8 @@
 package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.model.Position;
+import com.lambdanum.raids.controller.RaidController;
+import com.lambdanum.raids.controller.RaidControllerProvider;
+import com.lambdanum.raids.util.MinecraftBroadcastLogger;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,22 +12,27 @@ import javax.annotation.Nullable;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-public class VisitCommand implements ICommand {
+public class StartRaidCommand implements ICommand {
 
-    HomeCommand homeCommand = new HomeCommand();
+    private RaidControllerProvider raidControllerProvider;
+    private MinecraftBroadcastLogger logger;
+
+    public StartRaidCommand(RaidControllerProvider raidControllerProvider, MinecraftBroadcastLogger logger) {
+        this.raidControllerProvider = raidControllerProvider;
+        this.logger = logger;
+    }
 
     @Override
     public String getName() {
-        return "visit";
+        return "start-raid";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/visit <player name>";
+        return "start-raid <raid-name>";
     }
 
     @Override
@@ -35,22 +42,19 @@ public class VisitCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (!(sender instanceof EntityPlayer)) {
+        if (args.length < 1) {
             return;
         }
-        EntityPlayer player = (EntityPlayer) sender;
-        if (args.length == 1) {
-            Position playerHome = homeCommand.getHomeForPlayer(args[0]);
-            player.attemptTeleport(playerHome.x, playerHome.y, playerHome.z);
-        }
+        String raidName = args[0];
+
+        RaidController controller = raidControllerProvider.getRaidController(raidName);
+        controller.startMapInitialization(server);
+
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender instanceof EntityPlayer) {
-            return ((EntityPlayer)sender).dimension == 0;
-        }
-        return false;
+        return sender.canUseCommand(3, "");
     }
 
     @Override
