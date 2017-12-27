@@ -3,13 +3,13 @@ package com.lambdanum.raids.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RaidControllerFactory {
+public class RaidControllerProvider {
 
     public static final int PLAY_DIMENSION = 5;
     private Map<String, RaidController> raidControllers;
     private RaidRepository raidRepository;
 
-    public RaidControllerFactory(RaidRepository raidRepository) {
+    public RaidControllerProvider(RaidRepository raidRepository) {
         this.raidRepository = raidRepository;
         raidControllers = new HashMap<>();
         populateControllers();

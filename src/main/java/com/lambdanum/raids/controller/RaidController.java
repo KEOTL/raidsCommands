@@ -7,7 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
-public class RaidController {
+public class RaidController implements ConditionObserver {
 
     private Raid raid;
     private final int dimension;
@@ -44,5 +44,10 @@ public class RaidController {
 
 
     }
+    @Override
+    public void notifyOnWatchedCondition() {
+        // Something has happened inside this raid.
+    }
+}
 
 }

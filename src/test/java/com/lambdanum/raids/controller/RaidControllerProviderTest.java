@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RaidControllerFactoryTest {
+public class RaidControllerProviderTest {
 
-    private RaidControllerFactory raidControllerFactory;
+    private RaidControllerProvider raidControllerProvider;
 
     @Mock
     private RaidRepository raidRepository;
@@ -28,12 +28,12 @@ public class RaidControllerFactoryTest {
     @Before
     public void setupRaidControllerFactory() {
         when(raidRepository.getRaids()).thenReturn(Collections.singletonList(new Raid(RAID_NAME, RAID_DIMENSION, REGION)));
-        raidControllerFactory = new RaidControllerFactory(raidRepository);
+        raidControllerProvider = new RaidControllerProvider(raidRepository);
     }
 
     @Test
     public void givenASingleRaid_whenCreatingTheRaidControllerFactory_thenACorrespondingRaidControllerIsCreated() {
-        RaidController controller = raidControllerFactory.getRaidController(RAID_NAME);
+        RaidController controller = raidControllerProvider.getRaidController(RAID_NAME);
 
         assertTrue(controller != null);
     }
