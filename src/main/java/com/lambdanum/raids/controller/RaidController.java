@@ -2,6 +2,9 @@ package com.lambdanum.raids.controller;
 
 import com.lambdanum.raids.model.Position;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -26,28 +29,27 @@ public class RaidController implements ConditionObserver {
     }
 
     public void initializePlayDimensionMap(MinecraftServer minecraftServer) {
-        WorldServer targetWorld = minecraftServer.getWorld(dimension);
-        WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
+        new Thread(() -> {
+            WorldServer targetWorld = minecraftServer.getWorld(dimension);
+            WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
 
-        Position lowerCorner = raid.region.getCorners()[0];
-        Position higherCorner = raid.region.getCorners()[1];
+            Position lowerCorner = raid.region.getCorners()[0];
+            Position higherCorner = raid.region.getCorners()[1];
 
-        for (int i = lowerCorner.getX(); i < higherCorner.getX(); i++) {
-            for (int j = lowerCorner.getY(); j < higherCorner.getY(); j++) {
-                for (int k = lowerCorner.getZ(); k < higherCorner.getZ(); k++) {
-                    BlockPos clonedPosition = new BlockPos(i,j,k);
-                    IBlockState sourceBlock = cleanRaidMap.getBlockState(clonedPosition);
-                    targetWorld.setBlockState(clonedPosition, sourceBlock);
+            for (int i = lowerCorner.getX(); i < higherCorner.getX(); i++) {
+                for (int j = lowerCorner.getY(); j < higherCorner.getY(); j++) {
+                    for (int k = lowerCorner.getZ(); k < higherCorner.getZ(); k++) {
+                        BlockPos clonedPosition = new BlockPos(i,j,k);
+                        IBlockState sourceBlock = cleanRaidMap.getBlockState(clonedPosition);
+                        targetWorld.setBlockState(clonedPosition, sourceBlock);
+                    }
                 }
             }
-        }
-
+        }).start();
 
     }
     @Override
     public void notifyOnWatchedCondition() {
         // Something has happened inside this raid.
     }
-}
-
 }
