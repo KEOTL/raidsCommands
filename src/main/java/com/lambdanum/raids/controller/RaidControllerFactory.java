@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class RaidControllerFactory {
 
+    public static final int PLAY_DIMENSION = 5;
     private Map<String, RaidController> raidControllers;
     private RaidRepository raidRepository;
 
@@ -15,7 +16,7 @@ public class RaidControllerFactory {
     }
 
     private void populateControllers() {
-        raidRepository.getRaids().forEach(raid -> raidControllers.put(raid.name, new RaidController(raid)));
+        raidRepository.getRaids().forEach(raid -> raidControllers.put(raid.name, new RaidController(raid, PLAY_DIMENSION)));
     }
 
     public RaidController getRaidController(String raidName) {

@@ -1,5 +1,7 @@
 package com.lambdanum.raids.model;
 
+import java.util.Iterator;
+
 public class Position {
 
     private int x = 0;
@@ -37,4 +39,5 @@ public class Position {
     public void setZ(int z) {
         this.z = z;
     }
+
 }

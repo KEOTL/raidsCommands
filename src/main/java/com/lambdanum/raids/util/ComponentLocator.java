@@ -3,10 +3,15 @@ package com.lambdanum.raids.util;
 import com.lambdanum.raids.controller.InMemoryRaidRepository;
 import com.lambdanum.raids.controller.RaidControllerFactory;
 import com.lambdanum.raids.controller.RaidRepository;
-import com.lambdanum.raids.controller.RestRaidRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.gui.MinecraftServerGui;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ComponentLocator {
 
@@ -19,22 +24,23 @@ public class ComponentLocator {
         configure();
     }
 
-    public Object getComponent(Class<?> type) {
+    public <T> T get(Class<T> type) {
         if (components.get(type) instanceof Class<?>) {
             try {
-                return ((Class) components.get(type)).newInstance();
+                return (T) ((Class<?>)components.get(type)).newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
                 throw new RuntimeException();
             }
         }
-        return components.get(type);
+        return (T) components.get(type);
     }
 
     protected void configure() {
         bind(InMemoryRaidRepository.class).to(RaidRepository.class);
-        bind(new RaidControllerFactory((RaidRepository) getComponent(RaidRepository.class))).to(RaidControllerFactory.class);
-
+        bind(new RaidControllerFactory(get(RaidRepository.class))).to(RaidControllerFactory.class);
+        bind(FMLCommonHandler.instance().getMinecraftServerInstance()).to(MinecraftServer.class);
+        bind(new MinecraftBroadcastLogger(get(MinecraftServer.class))).to(MinecraftBroadcastLogger.class);
     }
 
     private innerIntermediate bind(Object type) {
