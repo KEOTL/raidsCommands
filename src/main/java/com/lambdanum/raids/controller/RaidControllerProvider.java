@@ -1,25 +1,33 @@
 package com.lambdanum.raids.controller;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RaidControllerProvider {
 
-    public static final int PLAY_DIMENSION = 0;
-    private Map<String, RaidController> raidControllers;
+    private Map<Integer, RaidController> raidControllers;
     private RaidRepository raidRepository;
+    private Thread watchdog;
 
     public RaidControllerProvider(RaidRepository raidRepository) {
         this.raidRepository = raidRepository;
-        raidControllers = new HashMap<>();
-        populateControllers();
+        raidControllers = new ConcurrentHashMap<>();
+        watchdog = new Thread(new RaidControllerWatchdog(raidControllers));
+        watchdog.start();
     }
 
-    private void populateControllers() {
-        raidRepository.getRaids().forEach(raid -> raidControllers.put(raid.name, new RaidController(raid, PLAY_DIMENSION)));
+    public RaidController createController(String raidName, int playDimension) {
+        Raid raid = raidRepository.find(raidName);
+        RaidController controller = new RaidController(raid, playDimension);
+        raidControllers.put(playDimension, controller);
+        return controller;
     }
 
-    public RaidController getRaidController(String raidName) {
-        return raidControllers.get(raidName);
+    public boolean isRaidActiveInDimension(int playDimension) {
+        return raidControllers.containsKey(playDimension);
+    }
+
+    public RaidController getController(int playDimension) {
+        return raidControllers.get(playDimension);
     }
 }

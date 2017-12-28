@@ -33,7 +33,7 @@ public class RaidControllerProviderTest {
 
     @Test
     public void givenASingleRaid_whenCreatingTheRaidControllerFactory_thenACorrespondingRaidControllerIsCreated() {
-        RaidController controller = raidControllerProvider.getRaidController(RAID_NAME);
+        RaidController controller = raidControllerProvider.createController(RAID_NAME);
 
         assertTrue(controller != null);
     }

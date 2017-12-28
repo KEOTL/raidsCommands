@@ -5,17 +5,24 @@ import com.lambdanum.raids.model.Region;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryRaidRepository implements RaidRepository {
 
-    private List<Raid> raids = new ArrayList<>();
+    private Map<String, Raid> raids = new ConcurrentHashMap<>();
 
     public InMemoryRaidRepository() {
-        raids.add(new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10))));
+        raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10))));
+    }
+
+    @Override
+    public Raid find(String raidName) {
+        return raids.get(raidName);
     }
 
     @Override
     public List<Raid> getRaids() {
-        return raids;
+        return new ArrayList<>(raids.values());
     }
 }

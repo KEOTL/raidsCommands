@@ -2,7 +2,9 @@ package com.lambdanum.raids.util;
 
 import com.lambdanum.raids.commands.StartRaidCommand;
 import com.lambdanum.raids.controller.InMemoryRaidRepository;
+import com.lambdanum.raids.controller.McLogger;
 import com.lambdanum.raids.controller.RaidControllerProvider;
+import com.lambdanum.raids.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.controller.RaidRepository;
 import com.lambdanum.raids.controller.RegionCloner;
 
@@ -48,6 +50,8 @@ public class ComponentLocator {
         bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
         bind(RegionCloner.class).to(RegionCloner.class);
         bind(StartRaidCommand.class).to(StartRaidCommand.class);
+        bind(MinecraftBroadcastLogger.class).to(McLogger.class);
+        bind(RaidControllerWatchdog.class).to(RaidControllerWatchdog.class);
     }
 
     private innerIntermediate bind(Object type) {

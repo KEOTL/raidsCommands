@@ -13,7 +13,7 @@ public class RaidController implements ConditionObserver {
     private Raid raid;
     private final int dimension;
 
-    private boolean active = false;
+    private boolean active = true;
 
     public RaidController(Raid raid, int playDimension) {
         this.raid = raid;
@@ -32,11 +32,16 @@ public class RaidController implements ConditionObserver {
             WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
             regionCloner.cloneRegionToOtherDimension(cleanRaidMap, targetWorld, raid.region);
             logger.log("done initializing raid map '" + raid.name + "' on dimension " + dimension);
+            active = false;
         }).start();
     }
 
     @Override
     public void notifyOnWatchedCondition() {
         // Something has happened inside this raid.
+    }
+
+    public String getRaidName() {
+        return raid.name;
     }
 }

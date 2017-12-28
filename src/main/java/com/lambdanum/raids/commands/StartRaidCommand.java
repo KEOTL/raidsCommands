@@ -32,7 +32,7 @@ public class StartRaidCommand implements ICommand {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "start-raid <raid-name>";
+        return "start-raid <raid-name> <play-dimension>";
     }
 
     @Override
@@ -45,11 +45,20 @@ public class StartRaidCommand implements ICommand {
         if (args.length < 1) {
             return;
         }
+        int playDimension = 0;
+
         String raidName = args[0];
+        if (args.length > 1) {
+            playDimension = Integer.parseInt(args[1]);
+        }
 
-        RaidController controller = raidControllerProvider.getRaidController(raidName);
+        if (raidControllerProvider.isRaidActiveInDimension(playDimension)) {
+            logger.log("warning: raid already active in dimension " + playDimension + ". Aborting.");
+            return;
+        }
+
+        RaidController controller = raidControllerProvider.createController(raidName, playDimension);
         controller.startMapInitialization(server);
-
     }
 
     @Override
