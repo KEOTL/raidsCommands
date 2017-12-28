@@ -5,8 +5,12 @@ import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
 import com.lambdanum.raids.model.Raid;
+import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.objective.ObjectiveSubscriber;
 import com.lambdanum.raids.raid.controller.party.Party;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
@@ -21,6 +25,8 @@ public class RaidController implements ObjectiveSubscriber {
     private Raid raid;
     private final int dimension;
     private Party party;
+
+    private List<ObjectivePoller> objectivePollers = new ArrayList<>();
 
     private RaidStatus status = RaidStatus.STARTING_UP;
 
@@ -66,9 +72,15 @@ public class RaidController implements ObjectiveSubscriber {
     @Override
     public void notifyOnWatchedCondition() {
         // Something has happened inside this raid.
+        logger.log("something has happened");
     }
 
     public String getRaidName() {
         return raid.name;
+    }
+
+    public void addObjective(ObjectivePoller objective) {
+        objectivePollers.add(objective);
+        new Thread(objective).start();
     }
 }
