@@ -1,6 +1,6 @@
 package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.util.MinecraftBroadcastLogger;
+import com.lambdanum.raids.infrastructure.MinecraftBroadcastLogger;
 
 import java.util.Collections;
 import java.util.List;

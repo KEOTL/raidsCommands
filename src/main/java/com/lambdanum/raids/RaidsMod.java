@@ -1,6 +1,6 @@
 package com.lambdanum.raids;
 
-import com.lambdanum.raids.util.ComponentLocator;
+import com.lambdanum.raids.infrastructure.ComponentLocator;
 
 import net.minecraft.command.ICommand;
 import net.minecraftforge.common.MinecraftForge;

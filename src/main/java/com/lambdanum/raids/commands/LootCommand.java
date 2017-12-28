@@ -2,7 +2,12 @@ package com.lambdanum.raids.commands;
 
 import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
-import com.lambdanum.raids.LootItem;
+import com.lambdanum.raids.model.LootItem;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
@@ -12,10 +17,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 public class LootCommand implements ICommand {
 
@@ -51,7 +52,7 @@ public class LootCommand implements ICommand {
             LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
             for (LootItem item : lootItems) {
                 EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);
-                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.getMinecraftId()),item.getAmount()));
+                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.minecraftId),item.amount));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,9 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.raid.controller;
 
 import static junit.framework.TestCase.assertFalse;
 
 import com.lambdanum.raids.model.Region;
+import com.lambdanum.raids.model.Raid;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,4 @@
-package com.lambdanum.raids.controller;
-
-import com.lambdanum.raids.model.Position;
-import com.lambdanum.raids.model.Region;
+package com.lambdanum.raids.model;
 
 public class Raid {
 

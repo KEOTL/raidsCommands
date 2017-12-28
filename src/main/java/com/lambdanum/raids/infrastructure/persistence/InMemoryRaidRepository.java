@@ -1,7 +1,9 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.infrastructure.persistence;
 
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Region;
+import com.lambdanum.raids.model.Raid;
+import com.lambdanum.raids.raid.controller.RaidRepository;
 
 import java.util.ArrayList;
 import java.util.List;

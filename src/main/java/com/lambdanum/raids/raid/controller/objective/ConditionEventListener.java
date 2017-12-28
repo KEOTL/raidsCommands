@@ -1,4 +1,4 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.raid.controller.objective;
 
 public abstract class ConditionEventListener implements Runnable {
 

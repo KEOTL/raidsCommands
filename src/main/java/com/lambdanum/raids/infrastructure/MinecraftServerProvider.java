@@ -1,4 +1,4 @@
-package com.lambdanum.raids.util;
+package com.lambdanum.raids.infrastructure;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;

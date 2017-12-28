@@ -1,9 +1,9 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.infrastructure.utils.minecraft;
 
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Region;
-import com.lambdanum.raids.util.ComponentLocator;
-import com.lambdanum.raids.util.McLogger;
+import com.lambdanum.raids.infrastructure.ComponentLocator;
+import com.lambdanum.raids.infrastructure.McLogger;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

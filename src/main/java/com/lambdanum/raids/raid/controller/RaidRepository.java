@@ -1,4 +1,6 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.raid.controller;
+
+import com.lambdanum.raids.model.Raid;
 
 import java.util.List;
 

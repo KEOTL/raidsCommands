@@ -1,9 +1,10 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.raid.controller;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.lambdanum.raids.model.Region;
+import com.lambdanum.raids.model.Raid;
 
 import java.util.Collections;
 

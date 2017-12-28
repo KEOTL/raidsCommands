@@ -1,6 +1,6 @@
 package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.util.ComponentLocator;
+import com.lambdanum.raids.infrastructure.ComponentLocator;
 
 public class CommandBinder extends ComponentLocator {
 

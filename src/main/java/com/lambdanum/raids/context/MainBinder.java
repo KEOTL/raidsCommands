@@ -1,15 +1,15 @@
 package com.lambdanum.raids.context;
 
 import com.lambdanum.raids.commands.CommandBinder;
-import com.lambdanum.raids.controller.InMemoryRaidRepository;
-import com.lambdanum.raids.controller.RaidControllerProvider;
-import com.lambdanum.raids.controller.RaidControllerWatchdog;
-import com.lambdanum.raids.controller.RaidRepository;
-import com.lambdanum.raids.controller.RegionCloner;
-import com.lambdanum.raids.util.AbstractBinder;
-import com.lambdanum.raids.util.McLogger;
-import com.lambdanum.raids.util.MinecraftBroadcastLogger;
-import com.lambdanum.raids.util.MinecraftServerProvider;
+import com.lambdanum.raids.infrastructure.AbstractBinder;
+import com.lambdanum.raids.infrastructure.McLogger;
+import com.lambdanum.raids.infrastructure.MinecraftBroadcastLogger;
+import com.lambdanum.raids.infrastructure.MinecraftServerProvider;
+import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidRepository;
+import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
+import com.lambdanum.raids.raid.controller.RaidControllerProvider;
+import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
+import com.lambdanum.raids.raid.controller.RaidRepository;
 
 import net.minecraft.server.MinecraftServer;
 
