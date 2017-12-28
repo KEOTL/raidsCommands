@@ -26,11 +26,12 @@ public class BeginCommand implements ICommand {
     private HomeCommand homeCommand;
 
     private static final String API_URL = "https://boiling-forest-57763.herokuapp.com/user/";
-    private Gson gson = new Gson();
+    private Gson gson;
 
-    public BeginCommand(LootCommand lootCommand, HomeCommand homeCommand) {
+    public BeginCommand(LootCommand lootCommand, HomeCommand homeCommand, Gson gson) {
         this.lootCommand = lootCommand;
         this.homeCommand = homeCommand;
+        this.gson = gson;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class BeginCommand implements ICommand {
         try {
             String userJson = HttpHelper.get(API_URL + username);
             User user = gson.fromJson(userJson, User.class);
-            return user.isGeneratedIsland();
+            return user.generatedIsland;
         } catch (Exception e) {
             e.printStackTrace();
         }

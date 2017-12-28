@@ -19,7 +19,11 @@ import net.minecraft.util.math.BlockPos;
 public class HomeCommand implements ICommand {
 
     private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
-    private Gson gson = new Gson();
+    private Gson gson;
+
+    public HomeCommand(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public String getName() {

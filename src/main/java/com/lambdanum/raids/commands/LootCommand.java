@@ -22,7 +22,11 @@ public class LootCommand implements ICommand {
 
     private static final String URL = "https://boiling-forest-57763.herokuapp.com/loot/";
 
-    private Gson gson = new Gson();
+    private Gson gson;
+
+    public LootCommand(Gson gson) {
+        this.gson = gson;
+    }
 
     @Override
     public String getName() {

@@ -2,22 +2,14 @@ package com.lambdanum.raids.model;
 
 public class User {
 
-    private String username;
-    private boolean generatedIsland;
+    public String username;
+    public boolean generatedIsland;
 
-    public String getUsername() {
-        return username;
+    public User() {
     }
 
-    public void setUsername(String username) {
+    public User(String username, boolean generatedIsland) {
         this.username = username;
-    }
-
-    public boolean isGeneratedIsland() {
-        return generatedIsland;
-    }
-
-    public void setGeneratedIsland(boolean generatedIsland) {
         this.generatedIsland = generatedIsland;
     }
 }
