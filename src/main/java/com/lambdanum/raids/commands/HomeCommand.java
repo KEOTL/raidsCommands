@@ -1,8 +1,6 @@
 package com.lambdanum.raids.commands;
 
-import com.google.gson.Gson;
-import com.lambdanum.raids.HttpHelper;
-import com.lambdanum.raids.model.Position;
+import com.lambdanum.raids.application.PlayerHomeService;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +16,10 @@ import net.minecraft.util.math.BlockPos;
 
 public class HomeCommand implements ICommand {
 
-    private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
-    private Gson gson;
+    private PlayerHomeService homeService;
 
-    public HomeCommand(Gson gson) {
-        this.gson = gson;
+    public HomeCommand(PlayerHomeService homeService) {
+        this.homeService = homeService;
     }
 
     @Override
@@ -44,34 +41,14 @@ public class HomeCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
-
-            Position playerHome = getHomeForPlayer(player.getName());
-            player.attemptTeleport(playerHome.x, playerHome.y, playerHome.z);
-        }
-    }
-
-    public Position getHomeForPlayer(String username) {
-        try {
-            String jsonPosition = HttpHelper.get(API_URL + username);
-            return gson.fromJson(jsonPosition,Position.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Position();
-    }
-
-    public void setHomeForPlayer(String username, Position homePosition) {
-        try {
-            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.x,homePosition.y,homePosition.z));
-        } catch (Exception e) {
-            e.printStackTrace();
+            homeService.asyncTeleportPlayerToHome(player);
         }
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         if (sender instanceof EntityPlayer) {
-            return ((EntityPlayer)sender).dimension == 0;
+            return ((EntityPlayer) sender).dimension == 0;
         }
         return false;
     }

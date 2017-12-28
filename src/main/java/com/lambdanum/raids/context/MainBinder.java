@@ -1,10 +1,14 @@
 package com.lambdanum.raids.context;
 
+import com.lambdanum.raids.application.PlayerHomeService;
+import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.AbstractBinder;
 import com.lambdanum.raids.infrastructure.McLogger;
 import com.lambdanum.raids.infrastructure.MinecraftBroadcastLogger;
 import com.lambdanum.raids.infrastructure.MinecraftServerProvider;
 import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidRepository;
+import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.raid.controller.RaidRepository;
@@ -21,6 +25,9 @@ public class MainBinder extends AbstractBinder {
         bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
         bind(MinecraftBroadcastLogger.class).to(McLogger.class);
         bind(RaidControllerWatchdog.class).to(RaidControllerWatchdog.class);
+        bind(PlayerTeleportService.class).to(PlayerTeleportService.class);
+        bind(PlayerHomeService.class).to(PlayerHomeService.class);
+        bind(RestPlayerHomeRepository.class).to(PlayerHomeRepository.class);
         install(UtilBinder.class);
         install(CommandBinder.class);
     }

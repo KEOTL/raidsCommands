@@ -1,5 +1,6 @@
 package com.lambdanum.raids.commands;
 
+import com.lambdanum.raids.application.PlayerHomeService;
 import com.lambdanum.raids.model.Position;
 
 import java.util.Collections;
@@ -16,10 +17,10 @@ import net.minecraft.util.math.BlockPos;
 
 public class SetHomeCommand implements ICommand {
 
-    private HomeCommand homeCommand;
+    private PlayerHomeService homeService;
 
-    public SetHomeCommand(HomeCommand homeCommand) {
-        this.homeCommand = homeCommand;
+    public SetHomeCommand(PlayerHomeService homeService) {
+        this.homeService = homeService;
     }
 
     @Override
@@ -41,11 +42,11 @@ public class SetHomeCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer && args.length == 0) {
             EntityPlayer player = (EntityPlayer) sender;
-            homeCommand.setHomeForPlayer(player.getName(), new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
+            homeService.asyncSetPlayerHome(player.getName(), new Position(player.getPosition()));
         }
         if (sender instanceof EntityPlayer && args.length == 1) {
             EntityPlayer player = (EntityPlayer) sender;
-            homeCommand.setHomeForPlayer(args[0], new Position(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ()));
+            homeService.asyncSetPlayerHome(args[0], new Position(player.getPosition()));
         }
     }
 

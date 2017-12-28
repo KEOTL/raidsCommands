@@ -2,6 +2,7 @@ package com.lambdanum.raids.commands;
 
 import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
+import com.lambdanum.raids.application.PlayerHomeService;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.User;
 
@@ -23,14 +24,16 @@ import net.minecraft.world.GameType;
 public class BeginCommand implements ICommand {
 
     private LootCommand lootCommand;
-    private HomeCommand homeCommand;
+    private PlayerHomeService homeService;
+    private HttpHelper httpHelper;
 
     private static final String API_URL = "https://boiling-forest-57763.herokuapp.com/user/";
     private Gson gson;
 
-    public BeginCommand(LootCommand lootCommand, HomeCommand homeCommand, Gson gson) {
+    public BeginCommand(LootCommand lootCommand, PlayerHomeService homeService, HttpHelper httpHelper, Gson gson) {
         this.lootCommand = lootCommand;
-        this.homeCommand = homeCommand;
+        this.homeService = homeService;
+        this.httpHelper = httpHelper;
         this.gson = gson;
     }
 
@@ -86,8 +89,8 @@ public class BeginCommand implements ICommand {
 
                 player.setPosition(playerPos.getX(), playerPos.getY() + 2, playerPos.getZ());
                 lootCommand.execute(server, sender, new String[] {playerName, "startup"});
-                homeCommand.setHomeForPlayer(playerName, new Position(playerPos.getX()-1, playerPos.getY() + 1, playerPos.getZ()));
-                homeCommand.execute(server,sender,new String[]{});
+                homeService.asyncSetPlayerHome(playerName, new Position(playerPos.getX()-1, playerPos.getY() + 1, playerPos.getZ()));
+                homeService.asyncTeleportPlayerToHome(player);
             } else {
                 player.setGameType(GameType.SPECTATOR);
                 sender.sendMessage(new TextComponentString("You are now spectating. Move to the desired location and " +
@@ -107,7 +110,7 @@ public class BeginCommand implements ICommand {
 
     private boolean hasUserAlreadyGeneratedIsland(String username) {
         try {
-            String userJson = HttpHelper.get(API_URL + username);
+            String userJson = httpHelper.get(API_URL + username);
             User user = gson.fromJson(userJson, User.class);
             return user.generatedIsland;
         } catch (Exception e) {
@@ -118,7 +121,7 @@ public class BeginCommand implements ICommand {
 
     private void setUserAlreadyGeneratedIsland(String username) {
         try {
-            HttpHelper.post(API_URL + username + "/isGeneratedIsland");
+            httpHelper.post(API_URL + username + "/isGeneratedIsland");
         } catch (Exception e) {
             e.printStackTrace();
         }

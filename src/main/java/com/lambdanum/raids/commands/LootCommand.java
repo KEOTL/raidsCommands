@@ -23,9 +23,11 @@ public class LootCommand implements ICommand {
     private static final String URL = "https://boiling-forest-57763.herokuapp.com/loot/";
 
     private Gson gson;
+    private HttpHelper httpHelper;
 
-    public LootCommand(Gson gson) {
+    public LootCommand(Gson gson, HttpHelper httpHelper) {
         this.gson = gson;
+        this.httpHelper = httpHelper;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class LootCommand implements ICommand {
         String playerName = args[0];
         String lootTable = args[1];
         try {
-            String lootJson = HttpHelper.get(URL + lootTable + "?username=" + playerName);
+            String lootJson = httpHelper.get(URL + lootTable + "?username=" + playerName);
             LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
             for (LootItem item : lootItems) {
                 EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);

@@ -1,5 +1,7 @@
 package com.lambdanum.raids.model;
 
+import net.minecraft.util.math.BlockPos;
+
 public class Position {
 
     public static final Position ORIGIN = new Position(0,0,0);
@@ -16,5 +18,11 @@ public class Position {
 
     public Position() {
         this(0,0,0);
+    }
+
+    public Position(BlockPos blockPos) {
+        this.x = blockPos.getX();
+        this.y = blockPos.getY();
+        this.z = blockPos.getZ();
     }
 }

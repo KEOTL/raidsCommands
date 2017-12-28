@@ -1,5 +1,7 @@
 package com.lambdanum.raids.commands;
 
+import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.model.Position;
 
 import java.util.Collections;
@@ -16,10 +18,12 @@ import net.minecraft.util.math.BlockPos;
 
 public class VisitCommand implements ICommand {
 
-    private HomeCommand homeCommand;
+    private PlayerHomeRepository homeRepository;
+    private PlayerTeleportService teleportService;
 
-    public VisitCommand(HomeCommand homeCommand) {
-        this.homeCommand = homeCommand;
+    public VisitCommand(PlayerHomeRepository homeRepository, PlayerTeleportService teleportService) {
+        this.homeRepository = homeRepository;
+        this.teleportService = teleportService;
     }
 
     @Override
@@ -44,8 +48,8 @@ public class VisitCommand implements ICommand {
         }
         EntityPlayer player = (EntityPlayer) sender;
         if (args.length == 1) {
-            Position playerHome = homeCommand.getHomeForPlayer(args[0]);
-            player.attemptTeleport(playerHome.x, playerHome.y, playerHome.z);
+            Position otherPlayerHome = homeRepository.getPlayerHome(args[0]);
+            teleportService.teleportPlayer(player, otherPlayerHome);
         }
     }
 
