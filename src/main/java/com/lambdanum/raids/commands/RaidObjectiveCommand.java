@@ -31,7 +31,7 @@ public class RaidObjectiveCommand implements ICommand {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "objective add <type> <params...>";
+        return "objective <type> <params...>";
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RaidObjectiveCommand implements ICommand {
 
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

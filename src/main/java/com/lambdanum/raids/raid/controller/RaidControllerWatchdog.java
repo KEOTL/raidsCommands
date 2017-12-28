@@ -37,6 +37,7 @@ public class RaidControllerWatchdog implements Runnable {
         for (Integer dimension : raidControllers.keySet()) {
             RaidController controller = raidControllers.get(dimension);
             if (!controller.isRaidActive()) {
+                controller.stop();
                 raidControllers.remove(dimension);
                 logger.log(String.format("cleared inactive raid %s on dimension %d", controller.getRaidName(), dimension));
             }

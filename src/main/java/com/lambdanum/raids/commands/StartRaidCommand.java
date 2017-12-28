@@ -76,7 +76,7 @@ public class StartRaidCommand implements ICommand {
 
         List<EntityPlayer> players = playerNames.stream().map(onlinePlayerService::getPlayerByUsername).collect(Collectors.toList());
         RaidController controller = raidControllerProvider.createController(raidName, playDimension, new Party(players));
-        controller.startMapInitialization(server);
+        controller.startMapInitialization();
     }
 
     @Override

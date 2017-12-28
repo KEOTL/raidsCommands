@@ -21,7 +21,12 @@ public class AskItemAtPositionObjectivePoller extends ObjectivePoller {
     @Override
     protected boolean isConditionMet() {
         String command = String.format("testfor @e[type=Item,x=%s,y=%s,z=%s,dx=0,dy=0,dz=0] {Item:{id:\"%s\"}}", position.x, position.y, position.z, askedItem);
+        return !(minecraftServer.commandManager.executeCommand(commandSender, command) == 0);
+    }
 
-        return !(minecraftServer.commandManager.executeCommand(minecraftServer, command) == 0);
+    @Override
+    protected void cleanup() {
+        String deleteItemCommand = String.format("kill @e[type=Item,x=%s,y=%s,z=%s,dx=0,dy=0,dz=0]", position.x, position.y, position.z);
+        minecraftServer.commandManager.executeCommand(commandSender, deleteItemCommand);
     }
 }

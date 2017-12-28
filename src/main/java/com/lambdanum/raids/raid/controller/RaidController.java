@@ -9,9 +9,6 @@ import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.objective.ObjectiveSubscriber;
 import com.lambdanum.raids.raid.controller.party.Party;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
@@ -21,19 +18,28 @@ public class RaidController implements ObjectiveSubscriber {
     private final MinecraftBroadcastLogger logger = ComponentLocator.INSTANCE.get(MinecraftBroadcastLogger.class);
     private final RegionCloner regionCloner = ComponentLocator.INSTANCE.get(RegionCloner.class);
     private final PlayerTeleportService teleportService = ComponentLocator.INSTANCE.get(PlayerTeleportService.class);
+    private final MinecraftServer minecraftServer = ComponentLocator.INSTANCE.get(MinecraftServer.class);
 
     private Raid raid;
     private final int dimension;
     private Party party;
+    private RaidCommandSender commandSender;
 
-    private List<ObjectivePoller> objectivePollers = new ArrayList<>();
+    private ObjectiveController objectiveController;
 
     private RaidStatus status = RaidStatus.STARTING_UP;
+    private WorldServer playWorld;
 
     public RaidController(Raid raid, int playDimension, Party party) {
         this.raid = raid;
         this.dimension = playDimension;
         this.party = party;
+
+
+        playWorld = minecraftServer.getWorld(dimension);
+
+        commandSender = new RaidCommandSender(playWorld);
+        objectiveController = new ObjectiveController(commandSender);
 
         System.out.println("Initialized raidController on dimension :" + dimension);
     }
@@ -42,30 +48,28 @@ public class RaidController implements ObjectiveSubscriber {
         return status == RaidStatus.STARTING_UP || party.areAllMembersInDimension(dimension);
     }
 
-    public void startMapInitialization(MinecraftServer minecraftServer) {
+    public void startMapInitialization() {
 
-            WorldServer targetWorld = minecraftServer.getWorld(dimension);
-            WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
+        WorldServer cleanRaidMap = minecraftServer.getWorld(raid.backupDimension);
 
-            party.setGameType(GameType.SPECTATOR);
-            party.teleportAllPlayers(teleportService, dimension, raid.spawn);
+        party.setGameType(GameType.SPECTATOR);
+        party.teleportAllPlayers(teleportService, dimension, raid.spawn);
 
+        regionCloner.cloneRegionToOtherDimension(cleanRaidMap, playWorld, raid.region);
+        logger.log("done initializing raid map '" + raid.name + "' on dimension " + dimension);
 
-            regionCloner.cloneRegionToOtherDimension(cleanRaidMap, targetWorld, raid.region);
-            logger.log("done initializing raid map '" + raid.name + "' on dimension " + dimension);
+        party.setGameType(GameType.ADVENTURE);
+        party.teleportAllPlayers(teleportService, dimension, raid.spawn);
 
-            party.setGameType(GameType.ADVENTURE);
-            party.teleportAllPlayers(teleportService, dimension, raid.spawn);
+        logger.log("teleported players to play dimension " + dimension);
+        status = RaidStatus.RUNNING;
 
-            logger.log("teleported players to play dimension " + dimension);
-            status = RaidStatus.RUNNING;
-
-            executeStartupScript(minecraftServer, raid.startupScript);
+        executeStartupScript(minecraftServer, raid.startupScript);
     }
 
     private void executeStartupScript(MinecraftServer minecraftServer, String[] startupScript) {
         for (String command : startupScript) {
-            minecraftServer.commandManager.executeCommand(minecraftServer, command);
+            minecraftServer.commandManager.executeCommand(commandSender, command);
         }
     }
 
@@ -80,7 +84,12 @@ public class RaidController implements ObjectiveSubscriber {
     }
 
     public void addObjective(ObjectivePoller objective) {
-        objectivePollers.add(objective);
-        new Thread(objective).start();
+        objectiveController.addObjectiveAndSetupPolling(objective);
+    }
+
+    public void stop() {
+        logger.log("stopping all objective pollers");
+        objectiveController.stopAllPollers();
+        logger.log("done stopping objective pollers");
     }
 }

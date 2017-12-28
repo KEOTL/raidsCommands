@@ -26,7 +26,6 @@ public class RaidService {
         RaidController controller = raidControllerProvider.getController(dimension);
         ObjectivePoller objective = objectiveAbstractFactory.create(controller, objectiveType, args);
 
-        // Probably not necessary since they run in their own thread
         controller.addObjective(objective);
 
         logger.log(String.format("added objective %s on dimension %s", objectiveType, dimension));
