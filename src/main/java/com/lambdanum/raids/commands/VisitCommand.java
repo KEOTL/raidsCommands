@@ -16,7 +16,11 @@ import net.minecraft.util.math.BlockPos;
 
 public class VisitCommand implements ICommand {
 
-    HomeCommand homeCommand = new HomeCommand();
+    private HomeCommand homeCommand;
+
+    public VisitCommand(HomeCommand homeCommand) {
+        this.homeCommand = homeCommand;
+    }
 
     @Override
     public String getName() {

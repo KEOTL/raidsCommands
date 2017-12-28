@@ -1,19 +1,13 @@
 package com.lambdanum.raids.util;
 
-import com.lambdanum.raids.commands.StartRaidCommand;
-import com.lambdanum.raids.controller.InMemoryRaidRepository;
-import com.lambdanum.raids.controller.RaidControllerProvider;
-import com.lambdanum.raids.controller.RaidControllerWatchdog;
-import com.lambdanum.raids.controller.RaidRepository;
-import com.lambdanum.raids.controller.RegionCloner;
+import com.lambdanum.raids.context.MainBinder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ComponentLocator {
 
@@ -27,6 +21,9 @@ public class ComponentLocator {
     }
 
     public <T> T get(Class<T> type) {
+        if (components.get(type) instanceof RuntimeProvider) {
+            return (T) ((RuntimeProvider) components.get(type)).get();
+        }
         if (!(components.get(type) instanceof Class<?>)) {
             return (T) components.get(type);
         }
@@ -42,22 +39,25 @@ public class ComponentLocator {
         }
     }
 
-    protected void configure() {
-        bind(InMemoryRaidRepository.class).to(RaidRepository.class);
-        bind(RaidControllerProvider.class).to(RaidControllerProvider.class);
-        bind(FMLCommonHandler.instance().getMinecraftServerInstance()).to(MinecraftServer.class);
-        bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
-        bind(RegionCloner.class).to(RegionCloner.class);
-        bind(StartRaidCommand.class).to(StartRaidCommand.class);
-        bind(MinecraftBroadcastLogger.class).to(McLogger.class);
-        bind(RaidControllerWatchdog.class).to(RaidControllerWatchdog.class);
+    public <T> List<T> getAllChildren(Class<? extends T> clazz) {
+        List<T> children = new LinkedList<>();
+        for (Class<?> type : components.keySet()) {
+            if (clazz.isAssignableFrom(type)) {
+                children.add(get((Class<T>) type));
+            }
+        }
+        return children;
     }
 
-    private innerIntermediate bind(Object type) {
+    protected void configure() {
+        install(MainBinder.class);
+    }
+
+    protected innerIntermediate bind(Object type) {
         return new innerIntermediate(type);
     }
 
-    private class innerIntermediate {
+    protected class innerIntermediate {
         private Object type;
 
         public innerIntermediate(Object type) {
@@ -66,6 +66,22 @@ public class ComponentLocator {
 
         public void to(Class<?> abstraction) {
             components.put(abstraction, type);
+        }
+    }
+
+    protected void install(ComponentLocator componentLocator) {
+        components.putAll(componentLocator.components);
+    }
+
+    protected void install(Class<? extends ComponentLocator> componentLocatorClass) {
+        if (components.containsKey(componentLocatorClass)) {
+            install(get(componentLocatorClass));
+        } else {
+            try {
+                install(componentLocatorClass.newInstance());
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException("Could not instantiate binder");
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.lambdanum.raids.commands;
 
 import com.lambdanum.raids.controller.RaidController;
 import com.lambdanum.raids.controller.RaidControllerProvider;
+import com.lambdanum.raids.util.McLogger;
 import com.lambdanum.raids.util.MinecraftBroadcastLogger;
 
 import java.util.Collections;
@@ -18,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 public class StartRaidCommand implements ICommand {
 
     private RaidControllerProvider raidControllerProvider;
-    private MinecraftBroadcastLogger logger;
+    private McLogger logger;
 
     public StartRaidCommand(RaidControllerProvider raidControllerProvider, MinecraftBroadcastLogger logger) {
         this.raidControllerProvider = raidControllerProvider;

@@ -1,6 +1,5 @@
 package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.util.ComponentLocator;
 import com.lambdanum.raids.util.MinecraftBroadcastLogger;
 
 import java.util.Collections;
@@ -14,15 +13,22 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-public class TestCommand implements ICommand {
+public class EchoCommand implements ICommand {
+
+    private MinecraftBroadcastLogger logger;
+
+    public EchoCommand(MinecraftBroadcastLogger logger) {
+        this.logger = logger;
+    }
+
     @Override
     public String getName() {
-        return "test";
+        return "echo";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "test";
+        return "echo";
     }
 
     @Override
@@ -32,7 +38,11 @@ public class TestCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        ComponentLocator.INSTANCE.get(MinecraftBroadcastLogger.class).log("test");
+        StringBuilder message = new StringBuilder();
+        for (String arg : args) {
+            message.append(arg + " ");
+        }
+        logger.log(message.toString());
     }
 
     @Override

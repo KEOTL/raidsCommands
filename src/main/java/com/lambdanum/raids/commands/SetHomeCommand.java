@@ -1,6 +1,12 @@
 package com.lambdanum.raids.commands;
 
 import com.lambdanum.raids.model.Position;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -8,13 +14,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-
 public class SetHomeCommand implements ICommand {
 
-    private HomeCommand homeCommand = new HomeCommand();
+    private HomeCommand homeCommand;
+
+    public SetHomeCommand(HomeCommand homeCommand) {
+        this.homeCommand = homeCommand;
+    }
 
     @Override
     public String getName() {

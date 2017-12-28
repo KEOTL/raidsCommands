@@ -10,6 +10,7 @@ public class RaidController implements ConditionObserver {
 
     private final MinecraftBroadcastLogger logger = ComponentLocator.INSTANCE.get(MinecraftBroadcastLogger.class);
     private final RegionCloner regionCloner = ComponentLocator.INSTANCE.get(RegionCloner.class);
+
     private Raid raid;
     private final int dimension;
 

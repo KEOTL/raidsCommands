@@ -4,6 +4,12 @@ import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.User;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -14,17 +20,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-
 public class BeginCommand implements ICommand {
 
-    private LootCommand lootCommand = new LootCommand();
-    private HomeCommand homeCommand = new HomeCommand();
+    private LootCommand lootCommand;
+    private HomeCommand homeCommand;
 
     private static final String API_URL = "https://boiling-forest-57763.herokuapp.com/user/";
     private Gson gson = new Gson();
+
+    public BeginCommand(LootCommand lootCommand, HomeCommand homeCommand) {
+        this.lootCommand = lootCommand;
+        this.homeCommand = homeCommand;
+    }
 
     @Override
     public String getName() {
