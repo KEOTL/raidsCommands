@@ -18,11 +18,13 @@ public class LootService {
     }
 
     public void asyncLoot(String playerName, String tableName) {
-        new Thread(() -> {
-            EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
-            for (LootItem item : lootTableProvider.roll(tableName, player.getName())) {
-                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.minecraftId),item.amount));
-            }
-        }).start();
+        new Thread(() -> loot(playerName, tableName)).start();
+    }
+
+    public void loot(String playerName, String tableName) {
+        EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
+        for (LootItem item : lootTableProvider.roll(tableName, player.getName())) {
+            player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.minecraftId), item.amount));
+        }
     }
 }

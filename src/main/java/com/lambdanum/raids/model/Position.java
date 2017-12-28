@@ -25,4 +25,12 @@ public class Position {
         this.y = blockPos.getY();
         this.z = blockPos.getZ();
     }
+
+    public Position add(int i, int j, int k) {
+        return new Position(x + i, y + j, z + k);
+    }
+
+    public BlockPos toBlockPos() {
+        return new BlockPos(x,y,z);
+    }
 }

@@ -23,8 +23,10 @@ public class PlayerHomeService {
     }
 
     public void asyncSetPlayerHome(String playerName, Position home) {
-        new Thread(() -> {
-            homeRepository.setPlayerHome(playerName, home);
-        }).start();
+        new Thread(() -> setPlayerHome(playerName, home)).start();
+    }
+
+    public void setPlayerHome(String playerName, Position home) {
+        homeRepository.setPlayerHome(playerName, home);
     }
 }

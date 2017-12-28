@@ -1,12 +1,8 @@
 package com.lambdanum.raids.commands;
 
-import com.google.gson.Gson;
-import com.lambdanum.raids.HttpHelper;
-import com.lambdanum.raids.application.LootService;
-import com.lambdanum.raids.application.PlayerHomeService;
-import com.lambdanum.raids.context.config.ServerProperties;
+import com.lambdanum.raids.application.SkyblockService;
 import com.lambdanum.raids.model.Position;
-import com.lambdanum.raids.model.User;
+import com.lambdanum.raids.skyblock.SkyblockUserRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +13,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -25,19 +20,12 @@ import net.minecraft.world.GameType;
 
 public class BeginCommand implements ICommand {
 
-    private PlayerHomeService homeService;
-    private LootService lootService;
-    private HttpHelper httpHelper;
+    private SkyblockService skyblockService;
+    private SkyblockUserRepository skyblockUserRepository;
 
-    private String apiUrl;
-    private Gson gson;
-
-    public BeginCommand(PlayerHomeService homeService, LootService lootService, HttpHelper httpHelper, Gson gson, ServerProperties serverProperties) {
-        this.homeService = homeService;
-        this.lootService = lootService;
-        this.httpHelper = httpHelper;
-        this.gson = gson;
-        this.apiUrl = serverProperties.serverUrl + "/user/";
+    public BeginCommand(SkyblockService skyblockService, SkyblockUserRepository skyblockUserRepository) {
+        this.skyblockService = skyblockService;
+        this.skyblockUserRepository = skyblockUserRepository;
     }
 
     @Override
@@ -57,48 +45,21 @@ public class BeginCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer)sender;
+        if (!(sender instanceof EntityPlayer)) {
+            return;
+        }
+        EntityPlayer player = (EntityPlayer) sender;
 
-            if (player.isSpectator()) {
+        if (player.isSpectator()) {
+            String playerName = player.getName();
+            BlockPos playerPos = player.getPosition();
 
-                String playerName = player.getName();
-                BlockPos playerPos = player.getPosition();
+            skyblockService.asyncSetupPlayerIsland(playerName, new Position(playerPos));
 
-                for (int i = 0; i < 6; i++) {
-                    server.getWorld(0).setBlockState(playerPos.add(i - 3, -1, 0), Blocks.GRASS.getDefaultState());
-                    server.getWorld(0).setBlockState(playerPos.add(i - 3, -1, -1), Blocks.GRASS.getDefaultState());
-                    server.getWorld(0).setBlockState(playerPos.add(i - 3, -1, 1), Blocks.GRASS.getDefaultState());
-                    for (int j = 1; j < 3; j++) {
-                        server.getWorld(0).setBlockState(playerPos.add(i - 3, -1 - j, 0), Blocks.DIRT.getDefaultState());
-                        server.getWorld(0).setBlockState(playerPos.add(i - 3, -1 - j, -1), Blocks.DIRT.getDefaultState());
-                        server.getWorld(0).setBlockState(playerPos.add(i - 3, -1 - j, 1), Blocks.DIRT.getDefaultState());
-                    }
-                }
-
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        for (int k = 0; k < 3; k++) {
-                            server.getWorld(0).setBlockState(playerPos.add(2-i,2+j,1-k),Blocks.LEAVES.getDefaultState());
-                        }
-                    }
-                }
-
-                for (int j = 0; j < 5; j++) {
-                    server.getWorld(0).setBlockState(playerPos.add(1, j, 0), Blocks.LOG.getDefaultState());
-                }
-                setUserAlreadyGeneratedIsland(playerName);
-                player.setGameType(GameType.SURVIVAL);
-
-                player.setPosition(playerPos.getX(), playerPos.getY() + 2, playerPos.getZ());
-                lootService.asyncLoot(playerName, "startup");
-                homeService.asyncSetPlayerHome(playerName, new Position(playerPos.getX()-1, playerPos.getY() + 1, playerPos.getZ()));
-                homeService.asyncTeleportPlayerToHome(player);
-            } else {
-                player.setGameType(GameType.SPECTATOR);
-                sender.sendMessage(new TextComponentString("You are now spectating. Move to the desired location and " +
-                                "call the /begin command again to generate your island at that location."));
-            }
+        } else {
+            player.setGameType(GameType.SPECTATOR);
+            sender.sendMessage(new TextComponentString("You are now spectating. Move to the desired location and " +
+                "call the /begin command again to generate your island at that location."));
         }
     }
 
@@ -108,26 +69,7 @@ public class BeginCommand implements ICommand {
             return false;
         }
         EntityPlayer player = (EntityPlayer) sender;
-        return player.dimension == 0 && !hasUserAlreadyGeneratedIsland(player.getName());
-    }
-
-    private boolean hasUserAlreadyGeneratedIsland(String username) {
-        try {
-            String userJson = httpHelper.get(apiUrl + username);
-            User user = gson.fromJson(userJson, User.class);
-            return user.generatedIsland;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private void setUserAlreadyGeneratedIsland(String username) {
-        try {
-            httpHelper.post(apiUrl + username + "/isGeneratedIsland");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return player.dimension == 0 && !skyblockUserRepository.hasUserAlreadyGeneratedIsland(player.getName());
     }
 
     @Override
