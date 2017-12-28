@@ -2,8 +2,8 @@ package com.lambdanum.raids.infrastructure.utils.minecraft;
 
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Region;
-import com.lambdanum.raids.infrastructure.ComponentLocator;
-import com.lambdanum.raids.infrastructure.McLogger;
+import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
+import com.lambdanum.raids.infrastructure.injection.McLogger;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,4 +1,6 @@
-package com.lambdanum.raids.infrastructure;
+package com.lambdanum.raids.infrastructure.utils.minecraft;
+
+import com.lambdanum.raids.infrastructure.injection.RuntimeProvider;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;

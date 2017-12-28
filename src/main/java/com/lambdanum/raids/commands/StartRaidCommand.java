@@ -2,8 +2,8 @@ package com.lambdanum.raids.commands;
 
 import com.lambdanum.raids.raid.controller.RaidController;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
-import com.lambdanum.raids.infrastructure.McLogger;
-import com.lambdanum.raids.infrastructure.MinecraftBroadcastLogger;
+import com.lambdanum.raids.infrastructure.injection.McLogger;
+import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 
 import java.util.Collections;
 import java.util.List;

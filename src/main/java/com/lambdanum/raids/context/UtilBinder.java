@@ -3,7 +3,7 @@ package com.lambdanum.raids.context;
 import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.context.config.ServerProperties;
-import com.lambdanum.raids.infrastructure.AbstractBinder;
+import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
 
 public class UtilBinder extends AbstractBinder {

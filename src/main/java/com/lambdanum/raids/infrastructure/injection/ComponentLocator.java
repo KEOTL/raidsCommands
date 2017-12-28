@@ -1,4 +1,4 @@
-package com.lambdanum.raids.infrastructure;
+package com.lambdanum.raids.infrastructure.injection;
 
 import com.lambdanum.raids.context.MainBinder;
 
@@ -21,18 +21,22 @@ public class ComponentLocator {
     }
 
     public <T> T get(Class<T> type) {
-        if (components.get(type) instanceof RuntimeProvider) {
-            return (T) ((RuntimeProvider) components.get(type)).get();
+        if (!components.containsKey(type)) {
+            throw new InjectionException("could not find component " + type.getName());
         }
-        if (!(components.get(type) instanceof Class<?>)) {
-            return (T) components.get(type);
+        Object storedObject = components.get(type);
+        if (storedObject instanceof RuntimeProvider) {
+            return (T) ((RuntimeProvider) storedObject).get();
+        }
+        if (!(storedObject instanceof Class<?>)) {
+            return (T) storedObject;
         }
         try {
             ArrayList<Object> constructorDependencies = new ArrayList<>();
-            for (Class<?> constructorParameter : ((Class<?>) components.get(type)).getDeclaredConstructors()[0].getParameterTypes()) {
+            for (Class<?> constructorParameter : ((Class<?>) storedObject).getDeclaredConstructors()[0].getParameterTypes()) {
                 constructorDependencies.add(get(constructorParameter));
             }
-            return (T) ((Class<?>) components.get(type)).getDeclaredConstructors()[0].newInstance(constructorDependencies.toArray());
+            return (T) ((Class<?>) storedObject).getDeclaredConstructors()[0].newInstance(constructorDependencies.toArray());
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             throw new RuntimeException();
@@ -57,7 +61,7 @@ public class ComponentLocator {
         return new innerIntermediate(type);
     }
 
-    protected class innerIntermediate {
+    public class innerIntermediate {
         private Object type;
 
         public innerIntermediate(Object type) {

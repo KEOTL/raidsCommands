@@ -8,7 +8,7 @@ import com.lambdanum.raids.commands.LootCommand;
 import com.lambdanum.raids.commands.SetHomeCommand;
 import com.lambdanum.raids.commands.StartRaidCommand;
 import com.lambdanum.raids.commands.VisitCommand;
-import com.lambdanum.raids.infrastructure.ComponentLocator;
+import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 
 public class CommandBinder extends ComponentLocator {
 

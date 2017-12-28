@@ -1,7 +1,7 @@
 package com.lambdanum.raids.raid.controller;
 
-import com.lambdanum.raids.infrastructure.ComponentLocator;
-import com.lambdanum.raids.infrastructure.McLogger;
+import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
+import com.lambdanum.raids.infrastructure.injection.McLogger;
 
 import java.util.Map;
 

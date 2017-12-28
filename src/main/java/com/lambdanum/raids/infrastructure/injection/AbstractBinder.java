@@ -1,4 +1,4 @@
-package com.lambdanum.raids.infrastructure;
+package com.lambdanum.raids.infrastructure.injection;
 
 public abstract class AbstractBinder extends ComponentLocator {
 
