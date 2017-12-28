@@ -17,7 +17,7 @@ public class RaidControllerTest {
 
     @Before
     public void initializeRaidsController() {
-        raidController = new RaidController(new Raid(RAID_NAME, DIMENSION, REGION), DIMENSION);
+        raidController = new RaidController(new Raid(RAID_NAME, DIMENSION, REGION, spawn), DIMENSION);
     }
 
     @Test

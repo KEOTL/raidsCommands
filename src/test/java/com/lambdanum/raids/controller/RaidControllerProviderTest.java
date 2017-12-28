@@ -27,7 +27,7 @@ public class RaidControllerProviderTest {
 
     @Before
     public void setupRaidControllerFactory() {
-        when(raidRepository.getRaids()).thenReturn(Collections.singletonList(new Raid(RAID_NAME, RAID_DIMENSION, REGION)));
+        when(raidRepository.getRaids()).thenReturn(Collections.singletonList(new Raid(RAID_NAME, RAID_DIMENSION, REGION, spawn)));
         raidControllerProvider = new RaidControllerProvider(raidRepository);
     }
 

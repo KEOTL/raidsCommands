@@ -1,4 +1,4 @@
-package com.lambdanum.raids.controller;
+package com.lambdanum.raids.util;
 
 public interface McLogger {
     void log(String message);

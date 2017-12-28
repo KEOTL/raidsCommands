@@ -1,7 +1,5 @@
 package com.lambdanum.raids.util;
 
-import com.lambdanum.raids.controller.McLogger;
-
 import net.minecraft.server.MinecraftServer;
 
 public class MinecraftBroadcastLogger implements McLogger {

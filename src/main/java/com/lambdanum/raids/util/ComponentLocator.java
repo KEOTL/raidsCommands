@@ -2,7 +2,6 @@ package com.lambdanum.raids.util;
 
 import com.lambdanum.raids.commands.StartRaidCommand;
 import com.lambdanum.raids.controller.InMemoryRaidRepository;
-import com.lambdanum.raids.controller.McLogger;
 import com.lambdanum.raids.controller.RaidControllerProvider;
 import com.lambdanum.raids.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.controller.RaidRepository;

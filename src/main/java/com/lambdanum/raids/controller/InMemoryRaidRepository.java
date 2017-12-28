@@ -13,7 +13,11 @@ public class InMemoryRaidRepository implements RaidRepository {
     private Map<String, Raid> raids = new ConcurrentHashMap<>();
 
     public InMemoryRaidRepository() {
-        raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10))));
+        initializeSampleData();
+    }
+
+    private void initializeSampleData() {
+        raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10)), new Position(0,100,0)));
     }
 
     @Override
