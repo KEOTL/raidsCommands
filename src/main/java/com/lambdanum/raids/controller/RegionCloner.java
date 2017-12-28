@@ -51,7 +51,7 @@ public class RegionCloner {
     private void killEntitiesInDestination(Region region) {
         String command = String.format("kill @e[x=%d,y=%d,z=%d,dx=%d,dy=%d,dz=%d]", region.lowerCorner.x, region.lowerCorner.y, region.lowerCorner.z,
             region.higherCorner.x - region.lowerCorner.x, region.higherCorner.y - region.lowerCorner.y,
-            region.higherCorner.z, region.lowerCorner.z);
+            region.higherCorner.z - region.lowerCorner.z);
         logger.log("killing entities in destination");
         logger.log(command);
         minecraftServer.commandManager.executeCommand(minecraftServer, command);
