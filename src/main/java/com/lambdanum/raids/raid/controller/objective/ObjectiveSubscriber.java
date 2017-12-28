@@ -1,6 +1,6 @@
 package com.lambdanum.raids.raid.controller.objective;
 
-public interface ConditionObserver {
+public interface ObjectiveSubscriber {
 
     void notifyOnWatchedCondition();
 }

@@ -1,10 +1,10 @@
 package com.lambdanum.raids.raid.controller.objective;
 
-public abstract class ConditionEventListener implements Runnable {
+public abstract class ObjectivePoller implements Runnable {
 
-    private ConditionObserver subscriber;
+    private ObjectiveSubscriber subscriber;
 
-    public ConditionEventListener(ConditionObserver subscriber) {
+    public ObjectivePoller(ObjectiveSubscriber subscriber) {
         this.subscriber = subscriber;
     }
 

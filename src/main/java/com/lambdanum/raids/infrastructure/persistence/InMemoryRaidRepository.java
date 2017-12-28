@@ -19,7 +19,7 @@ public class InMemoryRaidRepository implements RaidRepository {
     }
 
     private void initializeSampleData() {
-        raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10)), new Position(0,100,0)));
+        raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10)), new Position(0,100,0), "say welcome!"));
     }
 
     @Override
