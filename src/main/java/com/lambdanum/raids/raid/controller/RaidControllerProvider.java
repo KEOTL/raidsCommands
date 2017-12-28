@@ -1,6 +1,7 @@
 package com.lambdanum.raids.raid.controller;
 
 import com.lambdanum.raids.model.Raid;
+import com.lambdanum.raids.raid.controller.party.Party;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,9 +19,9 @@ public class RaidControllerProvider {
         watchdog.start();
     }
 
-    public RaidController createController(String raidName, int playDimension) {
+    public RaidController createController(String raidName, int playDimension, Party party) {
         Raid raid = raidRepository.find(raidName);
-        RaidController controller = new RaidController(raid, playDimension);
+        RaidController controller = new RaidController(raid, playDimension, party);
         raidControllers.put(playDimension, controller);
         return controller;
     }
