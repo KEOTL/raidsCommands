@@ -1,5 +1,7 @@
 package com.lambdanum.raids.commands;
 
+import com.lambdanum.raids.application.LootService;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -14,10 +16,10 @@ import net.minecraft.util.math.BlockPos;
 
 public class DailyCommand implements ICommand {
 
-    private LootCommand lootCommand;
+    private LootService lootService;
 
-    public DailyCommand(LootCommand lootCommand) {
-        this.lootCommand = lootCommand;
+    public DailyCommand(LootService lootService) {
+        this.lootService = lootService;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class DailyCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            lootCommand.execute(server,sender, new String[]{player.getName(),"daily"});
+            lootService.asyncLoot(player.getName(), "daily");
         }
     }
 
