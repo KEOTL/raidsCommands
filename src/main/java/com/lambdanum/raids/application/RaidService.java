@@ -1,6 +1,7 @@
 package com.lambdanum.raids.application;
 
 import com.lambdanum.raids.infrastructure.injection.McLogger;
+import com.lambdanum.raids.raid.controller.RaidCommandSender;
 import com.lambdanum.raids.raid.controller.RaidController;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
@@ -39,6 +40,10 @@ public class RaidService {
         }
         if (sender instanceof TileEntityCommandBlock) {
             int dimension = ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
+            return raidControllerProvider.isRaidActiveInDimension(dimension);
+        }
+        if (sender instanceof RaidCommandSender) {
+            int dimension = ((RaidCommandSender) sender).getDimension();
             return raidControllerProvider.isRaidActiveInDimension(dimension);
         }
         return false;

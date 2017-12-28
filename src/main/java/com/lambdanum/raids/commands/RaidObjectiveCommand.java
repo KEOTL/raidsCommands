@@ -1,6 +1,7 @@
 package com.lambdanum.raids.commands;
 
 import com.lambdanum.raids.application.RaidService;
+import com.lambdanum.raids.raid.controller.RaidCommandSender;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,14 +47,19 @@ public class RaidObjectiveCommand implements ICommand {
             objectiveArgs.add(args[i]);
         }
 
+        int dimension = 0;
+
         if (sender instanceof EntityPlayer) {
-            int dimension = ((EntityPlayer) sender).dimension;
-            raidService.addObjective(dimension, args[0], objectiveArgs.toArray(new String[]{}));
+            dimension = ((EntityPlayer) sender).dimension;
         }
         if (sender instanceof TileEntityCommandBlock) {
-            int dimension = ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
-            raidService.addObjective(dimension, args[0], objectiveArgs.toArray(new String[]{}));
+            dimension = ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
         }
+        if (sender instanceof RaidCommandSender) {
+            dimension = ((RaidCommandSender) sender).getDimension();
+        }
+
+        raidService.addObjective(dimension, args[0], objectiveArgs.toArray(new String[]{}));
     }
 
     @Override

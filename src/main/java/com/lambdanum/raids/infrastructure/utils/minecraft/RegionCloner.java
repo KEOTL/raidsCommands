@@ -6,6 +6,7 @@ import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,8 +23,6 @@ public class RegionCloner {
     }
 
     public void cloneRegionToOtherDimension(WorldServer sourceWorld, WorldServer targetWorld, Region sourceRegion) {
-        killEntitiesInDestination(sourceRegion);
-
         Position lowerCorner = sourceRegion.lowerCorner;
         Position higherCorner = sourceRegion.higherCorner;
 
@@ -48,13 +47,13 @@ public class RegionCloner {
         logger.log("done cloning");
     }
 
-    private void killEntitiesInDestination(Region region) {
-        String command = String.format("kill @e[x=%d,y=%d,z=%d,dx=%d,dy=%d,dz=%d]", region.lowerCorner.x, region.lowerCorner.y, region.lowerCorner.z,
+    public void killEntitiesInDestinationExcludingPlayers(ICommandSender commandSender, Region region) {
+        String command = String.format("kill @e[x=%d,y=%d,z=%d,dx=%d,dy=%d,dz=%d,type=!player]", region.lowerCorner.x, region.lowerCorner.y, region.lowerCorner.z,
             region.higherCorner.x - region.lowerCorner.x, region.higherCorner.y - region.lowerCorner.y,
             region.higherCorner.z - region.lowerCorner.z);
         logger.log("killing entities in destination");
         logger.log(command);
-        minecraftServer.commandManager.executeCommand(minecraftServer, command);
+        minecraftServer.commandManager.executeCommand(commandSender, command);
     }
 
     private TileEntity clone(TileEntity source) throws IllegalAccessException, InstantiationException {

@@ -35,4 +35,8 @@ public class RaidCommandSender implements ICommandSender {
     public MinecraftServer getServer() {
         return worldServer.getMinecraftServer();
     }
+
+    public int getDimension() {
+        return worldServer.provider.getDimension();
+    }
 }

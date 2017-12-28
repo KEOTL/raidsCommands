@@ -35,7 +35,6 @@ public class RaidController implements ObjectiveSubscriber {
         this.dimension = playDimension;
         this.party = party;
 
-
         playWorld = minecraftServer.getWorld(dimension);
 
         commandSender = new RaidCommandSender(playWorld);
@@ -55,6 +54,7 @@ public class RaidController implements ObjectiveSubscriber {
         party.setGameType(GameType.SPECTATOR);
         party.teleportAllPlayers(teleportService, dimension, raid.spawn);
 
+        regionCloner.killEntitiesInDestinationExcludingPlayers(commandSender, raid.region);
         regionCloner.cloneRegionToOtherDimension(cleanRaidMap, playWorld, raid.region);
         logger.log("done initializing raid map '" + raid.name + "' on dimension " + dimension);
 
@@ -69,6 +69,7 @@ public class RaidController implements ObjectiveSubscriber {
 
     private void executeStartupScript(MinecraftServer minecraftServer, String[] startupScript) {
         for (String command : startupScript) {
+            logger.log(command);
             minecraftServer.commandManager.executeCommand(commandSender, command);
         }
     }
