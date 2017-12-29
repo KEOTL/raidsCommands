@@ -33,4 +33,32 @@ public class Position {
     public BlockPos toBlockPos() {
         return new BlockPos(x,y,z);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Position)) {
+            return false;
+        }
+
+        Position position = (Position) o;
+
+        if (x != position.x) {
+            return false;
+        }
+        if (y != position.y) {
+            return false;
+        }
+        return z == position.z;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + z;
+        return result;
+    }
 }

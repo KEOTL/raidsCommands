@@ -23,6 +23,8 @@ public abstract class ObjectivePoller implements Runnable {
 
     protected abstract void cleanup();
 
+    public abstract String getObjectiveName();
+
     @Override
     public void run() {
         while (!isConditionMet() && !shouldStop.get()) {

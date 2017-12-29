@@ -4,6 +4,7 @@ import com.lambdanum.raids.application.RaidService;
 import com.lambdanum.raids.raid.controller.RaidCommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,9 +44,7 @@ public class RaidObjectiveCommand implements ICommand {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         ArrayList<String> objectiveArgs = new ArrayList<>();
-        for (int i = 1; i < args.length; i++) {
-            objectiveArgs.add(args[i]);
-        }
+        objectiveArgs.addAll(Arrays.asList(args));
 
         int dimension = 0;
 
@@ -59,7 +58,7 @@ public class RaidObjectiveCommand implements ICommand {
             dimension = ((RaidCommandSender) sender).getDimension();
         }
 
-        raidService.addObjective(dimension, args[0], objectiveArgs);
+        raidService.addObjective(dimension, Arrays.asList(args));
     }
 
     @Override

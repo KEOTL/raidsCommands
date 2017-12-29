@@ -6,14 +6,15 @@ import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogg
 import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
 import com.lambdanum.raids.model.Raid;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
-import com.lambdanum.raids.raid.controller.objective.ObjectiveSubscriber;
 import com.lambdanum.raids.raid.controller.party.Party;
+
+import java.util.Arrays;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
 
-public class RaidController implements ObjectiveSubscriber {
+public class RaidController {
 
     private final MinecraftBroadcastLogger logger = ComponentLocator.INSTANCE.get(MinecraftBroadcastLogger.class);
     private final RegionCloner regionCloner = ComponentLocator.INSTANCE.get(RegionCloner.class);
@@ -64,20 +65,16 @@ public class RaidController implements ObjectiveSubscriber {
         logger.log("teleported players to play dimension " + dimension);
         status = RaidStatus.RUNNING;
 
-        executeStartupScript(minecraftServer, raid.startupScript);
+        executeStartupScript(raid.startupScript);
     }
 
-    private void executeStartupScript(MinecraftServer minecraftServer, String[] startupScript) {
-        for (String command : startupScript) {
-            logger.log(command);
-            minecraftServer.commandManager.executeCommand(commandSender, command);
-        }
+    private void executeStartupScript(String[] startupScript) {
+        Arrays.stream(startupScript).forEach(this::executeCommandInRaid);
     }
 
-    @Override
-    public void notifyOnWatchedCondition() {
-        // Something has happened inside this raid.
-        logger.log("something has happened");
+    public void executeCommandInRaid(String command) {
+        logger.log(command);
+        minecraftServer.commandManager.executeCommand(commandSender, command);
     }
 
     public String getRaidName() {

@@ -6,32 +6,41 @@ import com.lambdanum.raids.raid.controller.RaidController;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.objective.RaidObjectiveAbstractFactory;
+import com.lambdanum.raids.script.NestedCommandParser;
+import com.lambdanum.raids.script.ScriptCommand;
+import com.lambdanum.raids.script.ServerCommandObjectiveSubscriber;
 
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
+import org.apache.commons.lang3.StringUtils;
 
 public class RaidService {
 
     private RaidControllerProvider raidControllerProvider;
     private RaidObjectiveAbstractFactory objectiveAbstractFactory;
     private McLogger logger;
+    private NestedCommandParser commandParser;
 
-    public RaidService(RaidControllerProvider raidControllerProvider, RaidObjectiveAbstractFactory objectiveAbstractFactory, McLogger logger) {
+    public RaidService(RaidControllerProvider raidControllerProvider, RaidObjectiveAbstractFactory objectiveAbstractFactory, McLogger logger, NestedCommandParser commandParser) {
         this.raidControllerProvider = raidControllerProvider;
         this.objectiveAbstractFactory = objectiveAbstractFactory;
         this.logger = logger;
+        this.commandParser = commandParser;
     }
 
-    public void addObjective(int dimension, String objectiveType, List<String> args) {
+    public void addObjective(int dimension, List<String> args) {
+        ScriptCommand scriptCommand = commandParser.parse(StringUtils.join(args, " "));
+
         RaidController controller = raidControllerProvider.getController(dimension);
-        ObjectivePoller objective = objectiveAbstractFactory.create(controller, objectiveType, args);
+        ServerCommandObjectiveSubscriber callbackOnObjectiveCompletion = new ServerCommandObjectiveSubscriber(scriptCommand.ifStatements, controller);
+        ObjectivePoller objective = objectiveAbstractFactory.create(callbackOnObjectiveCompletion, scriptCommand.conditionClause);
 
         controller.addObjective(objective);
 
-        logger.log(String.format("added objective %s on dimension %s", objectiveType, dimension));
+        logger.log(String.format("added objective %s on dimension %s",objective.getObjectiveName() , dimension));
     }
 
     public boolean isInARaid(ICommandSender sender) {

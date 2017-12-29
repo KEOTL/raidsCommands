@@ -3,8 +3,8 @@ package com.lambdanum.raids.infrastructure;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.InjectionException;
+import com.lambdanum.raids.raid.controller.objective.TestableComponentLocator;
 
 import java.util.List;
 
@@ -80,12 +80,6 @@ public class ComponentLocatorTest {
         assertTrue(result instanceof SomeChildClass);
     }
 
-    private class TestableComponentLocator extends ComponentLocator {
-        @Override
-        public innerIntermediate bind(Object type) {
-            return super.bind(type);
-        }
 
-    }
 
 }

@@ -5,6 +5,7 @@ import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.context.config.ServerProperties;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
+import com.lambdanum.raids.script.NestedCommandParser;
 
 public class UtilBinder extends AbstractBinder {
     @Override
@@ -13,5 +14,6 @@ public class UtilBinder extends AbstractBinder {
         bind(Gson.class).to(Gson.class);
         bind(HttpHelper.class).to(HttpHelper.class);
         bind(ServerProperties.class).to(ServerProperties.class);
+        bind(NestedCommandParser.class).to(NestedCommandParser.class);
     }
 }

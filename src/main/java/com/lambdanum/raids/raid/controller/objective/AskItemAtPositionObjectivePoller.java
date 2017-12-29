@@ -29,4 +29,17 @@ public class AskItemAtPositionObjectivePoller extends ObjectivePoller {
         String deleteItemCommand = String.format("kill @e[type=Item,x=%s,y=%s,z=%s,dx=0,dy=0,dz=0]", position.x, position.y, position.z);
         minecraftServer.commandManager.executeCommand(commandSender, deleteItemCommand);
     }
+
+    @Override
+    public String getObjectiveName() {
+        return "ask-item";
+    }
+
+    public String getAskedItem() {
+        return askedItem;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
 }

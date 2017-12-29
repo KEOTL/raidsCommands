@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ComponentLocator {
 
-    public static final ComponentLocator INSTANCE = new ComponentLocator();
+    public static ComponentLocator INSTANCE = new ComponentLocator();
 
     private Map<Class<?>, Object> components;
 
