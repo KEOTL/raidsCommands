@@ -1,7 +1,14 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
-import com.google.gson.Gson;
+import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.model.Position;
+
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -9,23 +16,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
+public class VisitCommand implements ICommand {
 
-public class HomeCommand implements ICommand {
+    private PlayerHomeRepository homeRepository;
+    private PlayerTeleportService teleportService;
 
-    private String API_URL = "https://boiling-forest-57763.herokuapp.com/home/";
-    private Gson gson = new Gson();
+    public VisitCommand(PlayerHomeRepository homeRepository, PlayerTeleportService teleportService) {
+        this.homeRepository = homeRepository;
+        this.teleportService = teleportService;
+    }
 
     @Override
     public String getName() {
-        return "home";
+        return "visit";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "home";
+        return "/visit <player name>";
     }
 
     @Override
@@ -35,29 +43,13 @@ public class HomeCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (sender instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) sender;
-
-            Position playerHome = getHomeForPlayer(player.getName());
-            player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
+        if (!(sender instanceof EntityPlayer)) {
+            return;
         }
-    }
-
-    public Position getHomeForPlayer(String username) {
-        try {
-            String jsonPosition = HttpHelper.get(API_URL + username);
-            return gson.fromJson(jsonPosition,Position.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new Position();
-    }
-
-    public void setHomeForPlayer(String username, Position homePosition) {
-        try {
-            HttpHelper.post(API_URL + username + String.format("?x=%d&y=%d&z=%d",homePosition.getX(),homePosition.getY(),homePosition.getZ()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        EntityPlayer player = (EntityPlayer) sender;
+        if (args.length == 1) {
+            Position otherPlayerHome = homeRepository.getPlayerHome(args[0]);
+            teleportService.teleportPlayer(player, otherPlayerHome);
         }
     }
 

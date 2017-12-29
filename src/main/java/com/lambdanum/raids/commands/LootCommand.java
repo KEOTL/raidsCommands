@@ -1,24 +1,25 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
-import com.google.gson.Gson;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
+import com.lambdanum.raids.application.LootService;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+
 public class LootCommand implements ICommand {
 
-    private static final String URL = "https://boiling-forest-57763.herokuapp.com/loot/";
+    private LootService lootService;
 
-    private Gson gson = new Gson();
+    public LootCommand(LootService lootService) {
+        this.lootService = lootService;
+    }
 
     @Override
     public String getName() {
@@ -43,16 +44,8 @@ public class LootCommand implements ICommand {
 
         String playerName = args[0];
         String lootTable = args[1];
-        try {
-            String lootJson = HttpHelper.get(URL + lootTable + "?username=" + playerName);
-            LootItem[] lootItems = gson.fromJson(lootJson, LootItem[].class);
-            for (LootItem item : lootItems) {
-                EntityPlayer player = server.getPlayerList().getPlayerByUsername(playerName);
-                player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.getMinecraftId()),item.getAmount()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        lootService.asyncLoot(playerName, lootTable);
     }
 
     @Override

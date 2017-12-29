@@ -1,29 +1,34 @@
-package com.lambdanum.raids;
+package com.lambdanum.raids.commands;
 
-import com.lambdanum.raids.model.Position;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
+import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class VisitCommand implements ICommand {
+import javax.annotation.Nullable;
 
-    HomeCommand homeCommand = new HomeCommand();
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommand;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+
+public class EchoCommand implements ICommand {
+
+    private MinecraftBroadcastLogger logger;
+
+    public EchoCommand(MinecraftBroadcastLogger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public String getName() {
-        return "visit";
+        return "echo";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "/visit <player name>";
+        return "echo";
     }
 
     @Override
@@ -33,22 +38,16 @@ public class VisitCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (!(sender instanceof EntityPlayer)) {
-            return;
+        StringBuilder message = new StringBuilder();
+        for (String arg : args) {
+            message.append(arg + " ");
         }
-        EntityPlayer player = (EntityPlayer) sender;
-        if (args.length == 1) {
-            Position playerHome = homeCommand.getHomeForPlayer(args[0]);
-            player.attemptTeleport(playerHome.getX(), playerHome.getY(), playerHome.getZ());
-        }
+        logger.log(message.toString());
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender instanceof EntityPlayer) {
-            return ((EntityPlayer)sender).dimension == 0;
-        }
-        return false;
+        return true;
     }
 
     @Override

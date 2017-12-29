@@ -1,12 +1,14 @@
 package com.lambdanum.raids.model;
 
+import net.minecraft.util.math.BlockPos;
+
 public class Position {
 
-    private int x = 0;
-    private int y = 0;
-    private int z = 0;
+    public static final Position ORIGIN = new Position(0,0,0);
 
-    public Position() {}
+    public final int x;
+    public final int y;
+    public final int z;
 
     public Position(int x, int y, int z) {
         this.x = x;
@@ -14,27 +16,49 @@ public class Position {
         this.z = z;
     }
 
-    public int getX() {
-        return x;
+    public Position() {
+        this(0,0,0);
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public Position(BlockPos blockPos) {
+        this.x = blockPos.getX();
+        this.y = blockPos.getY();
+        this.z = blockPos.getZ();
     }
 
-    public int getY() {
-        return y;
+    public Position add(int i, int j, int k) {
+        return new Position(x + i, y + j, z + k);
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public BlockPos toBlockPos() {
+        return new BlockPos(x,y,z);
     }
 
-    public int getZ() {
-        return z;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Position)) {
+            return false;
+        }
+
+        Position position = (Position) o;
+
+        if (x != position.x) {
+            return false;
+        }
+        if (y != position.y) {
+            return false;
+        }
+        return z == position.z;
     }
 
-    public void setZ(int z) {
-        this.z = z;
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        result = 31 * result + z;
+        return result;
     }
 }
