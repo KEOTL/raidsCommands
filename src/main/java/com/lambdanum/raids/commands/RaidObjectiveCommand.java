@@ -59,7 +59,7 @@ public class RaidObjectiveCommand implements ICommand {
             dimension = ((RaidCommandSender) sender).getDimension();
         }
 
-        raidService.addObjective(dimension, args[0], objectiveArgs.toArray(new String[]{}));
+        raidService.addObjective(dimension, args[0], objectiveArgs);
     }
 
     @Override

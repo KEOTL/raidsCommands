@@ -7,6 +7,8 @@ import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.objective.RaidObjectiveAbstractFactory;
 
+import java.util.List;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
@@ -23,7 +25,7 @@ public class RaidService {
         this.logger = logger;
     }
 
-    public void addObjective(int dimension, String objectiveType, String... args) {
+    public void addObjective(int dimension, String objectiveType, List<String> args) {
         RaidController controller = raidControllerProvider.getController(dimension);
         ObjectivePoller objective = objectiveAbstractFactory.create(controller, objectiveType, args);
 
