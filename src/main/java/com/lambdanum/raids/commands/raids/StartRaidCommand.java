@@ -1,4 +1,4 @@
-package com.lambdanum.raids.commands;
+package com.lambdanum.raids.commands.raids;
 
 import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.infrastructure.injection.McLogger;

@@ -6,7 +6,7 @@ import com.lambdanum.raids.application.PlayerHomeService;
 import com.lambdanum.raids.application.PlayerTeleportService;
 import com.lambdanum.raids.application.RaidService;
 import com.lambdanum.raids.application.SkyblockService;
-import com.lambdanum.raids.commands.RaidObjectiveCommand;
+import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
 import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.injection.McLogger;

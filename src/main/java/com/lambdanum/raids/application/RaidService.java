@@ -44,19 +44,34 @@ public class RaidService {
     }
 
     public boolean isInARaid(ICommandSender sender) {
-        logger.log(sender.getClass().getName());
+        int dimension = getSenderDimension(sender);
+        return raidControllerProvider.isRaidActiveInDimension(dimension);
+    }
+
+    public int getSenderDimension(ICommandSender sender) {
         if (sender instanceof EntityPlayer) {
-            int dimension = ((EntityPlayer) sender).dimension;
-            return raidControllerProvider.isRaidActiveInDimension(dimension);
+            return ((EntityPlayer) sender).dimension;
         }
         if (sender instanceof TileEntityCommandBlock) {
-            int dimension = ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
-            return raidControllerProvider.isRaidActiveInDimension(dimension);
+            return ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
         }
         if (sender instanceof RaidCommandSender) {
-            int dimension = ((RaidCommandSender) sender).getDimension();
-            return raidControllerProvider.isRaidActiveInDimension(dimension);
+            return ((RaidCommandSender) sender).getDimension();
         }
-        return false;
+        return 0;
+    }
+
+    public boolean senderCanControlRaid(ICommandSender sender) {
+        return isInARaid(sender) && sender.canUseCommand(3, "");
+    }
+
+    public void triggerDefeat(int dimension) {
+        RaidController controller = raidControllerProvider.getController(dimension);
+        controller.triggerDefeat();
+    }
+
+    public void triggerVictory(int dimension) {
+        RaidController controller = raidControllerProvider.getController(dimension);
+        controller.triggerVictory();
     }
 }
