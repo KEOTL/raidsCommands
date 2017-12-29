@@ -9,9 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public class NestedCommandParser {
 
-    public static final String CONDITION_SEPARATOR = "[?]";
-    public static final String STATEMENT_SEPARATOR = ";";
-    public static final String BRANCH_SEPARATOR = ":";
+    public static final String CONDITION_SEPARATOR = "[?][?]";
+    public static final String STATEMENT_SEPARATOR = ";;";
+    public static final String BRANCH_SEPARATOR = "::";
 
     public ScriptCommand parse(String command) {
         String[] split = command.split(CONDITION_SEPARATOR);

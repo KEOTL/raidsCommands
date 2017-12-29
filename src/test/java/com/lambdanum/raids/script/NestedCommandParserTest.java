@@ -10,7 +10,7 @@ public class NestedCommandParserTest {
 
     @Test
     public void givenCommandWithCondition_thenReturnScriptCommandWithConditionAndBodyStatements() {
-        String command = "if x y z ? do something ;";
+        String command = "if x y z ?? do something ;;";
 
         ScriptCommand scriptCommand = nestedCommandParser.parse(command);
 
@@ -21,7 +21,7 @@ public class NestedCommandParserTest {
 
     @Test
     public void givenCommandWithConditionAndTwoStatements_thenReturnCommandWithConditionAndTwoBodyStatements() {
-        String command  = "if x,y,z? do stuff x; do stuff y";
+        String command  = "if x,y,z?? do stuff x;; do stuff y";
 
         ScriptCommand scriptCommand = nestedCommandParser.parse(command);
 
@@ -33,7 +33,7 @@ public class NestedCommandParserTest {
 
     @Test
     public void givenIfStatementWithTwoBranches_thenReturnCommandWithTwoBranches() {
-        String command = "if x?true:false;and something else;";
+        String command = "if x??true::false;;and something else;;";
 
         ScriptCommand scriptCommand = nestedCommandParser.parse(command);
 
@@ -47,7 +47,7 @@ public class NestedCommandParserTest {
 
     @Test
     public void givenIfStatementWithOnlyAnElseClause_thenCommandHasNoIfStatementsAndOnlyElseStatements() {
-        String command = "if x?: else stuff";
+        String command = "if x??:: else stuff";
 
         ScriptCommand scriptCommand = nestedCommandParser.parse(command);
 
