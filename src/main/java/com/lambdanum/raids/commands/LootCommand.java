@@ -23,12 +23,12 @@ public class LootCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "distributeLoot";
+        return "loot";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "distributeLoot";
+        return "loot";
     }
 
     @Override
