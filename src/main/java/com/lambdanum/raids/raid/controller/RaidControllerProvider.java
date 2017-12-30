@@ -21,6 +21,12 @@ public class RaidControllerProvider {
 
     public RaidController createController(String raidName, int playDimension, Party party) {
         Raid raid = raidRepository.find(raidName);
+        if (!party.hasAppropriatePlayerCount(raid)) {
+            throw new IncorrectNumberOfPlayersException();
+        }
+        if (!party.arePlayersCarryingOnlyAllowedItemsForRaid(raid)) {
+            throw new DisallowedItemsInInventoryException();
+        }
         RaidController controller = new RaidController(raid, playDimension, party);
         raidControllers.put(playDimension, controller);
         return controller;

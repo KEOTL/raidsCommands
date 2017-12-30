@@ -28,10 +28,12 @@ public class ObjectiveController {
             objective.shouldStop.set(true);
         }
         for (Thread pollerThread : pollersAndTheirThreads.values()) {
-            try {
-                pollerThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (pollerThread.isAlive()) {
+                try {
+                    pollerThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

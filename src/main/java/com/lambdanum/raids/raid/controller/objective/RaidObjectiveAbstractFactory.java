@@ -13,6 +13,8 @@ public class RaidObjectiveAbstractFactory {
         switch (objectiveType) {
             case "ask-item":
                 return new AskItemAtPositionObjectivePoller(subscriber, args.get(1), new Position(Integer.parseInt(args.get(2)), Integer.parseInt(args.get(3)), Integer.parseInt(args.get(4))));
+            case "bring-player":
+                return new BringPlayerObjectivePoller(subscriber, new Position(Integer.parseInt(args.get(1)), Integer.parseInt(args.get(2)), Integer.parseInt(args.get(3))));
         }
         throw new UnknownObjectiveTypeException(objectiveType);
     }

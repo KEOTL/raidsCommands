@@ -21,7 +21,7 @@ public abstract class ObjectivePoller implements Runnable {
 
     protected abstract boolean isConditionMet();
 
-    protected abstract void cleanup();
+    protected abstract void afterConditionIsMet();
 
     public abstract String getObjectiveName();
 
@@ -37,6 +37,6 @@ public abstract class ObjectivePoller implements Runnable {
         if (!shouldStop.get()) {
             subscriber.notifyOnWatchedCondition();
         }
-        cleanup();
+        afterConditionIsMet();
     }
 }

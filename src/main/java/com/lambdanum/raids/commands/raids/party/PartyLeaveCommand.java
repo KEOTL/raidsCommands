@@ -1,10 +1,7 @@
-package com.lambdanum.raids.commands;
+package com.lambdanum.raids.commands.raids.party;
 
-import com.lambdanum.raids.application.RaidService;
-import com.lambdanum.raids.raid.controller.RaidCommandSender;
+import com.lambdanum.raids.application.RaidPartyService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,25 +12,25 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityCommandBlock;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
-public class RaidObjectiveCommand implements ICommand {
+public class PartyLeaveCommand implements ICommand {
 
-    private RaidService raidService;
+    private RaidPartyService raidPartyService;
 
-    public RaidObjectiveCommand(RaidService raidService) {
-        this.raidService = raidService;
+    public PartyLeaveCommand(RaidPartyService raidPartyService) {
+        this.raidPartyService = raidPartyService;
     }
 
     @Override
     public String getName() {
-        return "objective";
+        return "party-leave";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "objective <type> <params...>";
+        return "party-leave";
     }
 
     @Override
@@ -43,27 +40,13 @@ public class RaidObjectiveCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        ArrayList<String> objectiveArgs = new ArrayList<>();
-        objectiveArgs.addAll(Arrays.asList(args));
-
-        int dimension = 0;
-
-        if (sender instanceof EntityPlayer) {
-            dimension = ((EntityPlayer) sender).dimension;
-        }
-        if (sender instanceof TileEntityCommandBlock) {
-            dimension = ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
-        }
-        if (sender instanceof RaidCommandSender) {
-            dimension = ((RaidCommandSender) sender).getDimension();
-        }
-
-        raidService.addObjective(dimension, Arrays.asList(args));
+        raidPartyService.removePlayerFromTheirParty(sender.getName());
+        sender.sendMessage(new TextComponentString("§7" + "Successfully left the party."));
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return raidService.isInARaid(sender) && sender.canUseCommand(3, "");
+        return raidPartyService.isPlayerInAParty(sender.getName()) && sender instanceof EntityPlayer;
     }
 
     @Override

@@ -45,7 +45,7 @@ public class LootCommand implements ICommand {
         String playerName = args[0];
         String lootTable = args[1];
 
-        lootService.asyncLoot(playerName, lootTable);
+        lootService.asyncDistributeLoot(playerName, lootTable);
     }
 
     @Override

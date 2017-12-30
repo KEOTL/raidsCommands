@@ -25,7 +25,7 @@ public class AskItemAtPositionObjectivePoller extends ObjectivePoller {
     }
 
     @Override
-    protected void cleanup() {
+    protected void afterConditionIsMet() {
         String deleteItemCommand = String.format("kill @e[type=Item,x=%s,y=%s,z=%s,dx=0,dy=0,dz=0]", position.x, position.y, position.z);
         minecraftServer.commandManager.executeCommand(commandSender, deleteItemCommand);
     }
