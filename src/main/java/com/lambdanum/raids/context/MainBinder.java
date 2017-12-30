@@ -12,8 +12,8 @@ import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
 import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidPartyRepository;
-import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
+import com.lambdanum.raids.infrastructure.persistence.RestRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
@@ -32,7 +32,7 @@ public class MainBinder extends AbstractBinder {
 
     @Override
     protected void configure() {
-        bind(InMemoryRaidRepository.class).to(RaidRepository.class);
+        bind(RestRaidRepository.class).to(RaidRepository.class);
 
         bind(new MinecraftServerProvider()).to(MinecraftServer.class);
 

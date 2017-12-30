@@ -6,9 +6,7 @@ import com.lambdanum.raids.model.Region;
 import com.lambdanum.raids.raid.controller.RaidRepository;
 import com.lambdanum.raids.raid.controller.party.loot.TeamLootType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,10 +32,5 @@ public class InMemoryRaidRepository implements RaidRepository {
     @Override
     public Raid find(String raidName) {
         return raids.get(raidName);
-    }
-
-    @Override
-    public List<Raid> getRaids() {
-        return new ArrayList<>(raids.values());
     }
 }
