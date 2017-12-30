@@ -1,6 +1,8 @@
 package com.lambdanum.raids.commands.raids.party;
 
 import com.lambdanum.raids.application.RaidPartyService;
+import com.lambdanum.raids.raid.controller.party.OnlinePlayerNotFoundException;
+import com.lambdanum.raids.raid.controller.party.PlayerAlreadyInAPartyException;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,10 +46,13 @@ public class PartyInviteCommand implements ICommand {
         }
         String hostPlayer = sender.getName();
         String invitedPlayer = args[0];
-        if (raidPartyService.isPlayerInAParty(invitedPlayer)) {
+        try {
+            raidPartyService.inviteToParty(hostPlayer, invitedPlayer);
+        } catch (PlayerAlreadyInAPartyException e) {
             throw new CommandException("Player is already in a party!");
+        } catch (OnlinePlayerNotFoundException e) {
+            throw new CommandException("Could not find the required player.");
         }
-        raidPartyService.inviteToParty(hostPlayer, invitedPlayer);
     }
 
     @Override

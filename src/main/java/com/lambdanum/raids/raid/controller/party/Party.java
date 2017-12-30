@@ -41,7 +41,7 @@ public class Party {
 
     public void broadcastToMembers(String message) {
         for (EntityPlayer player : players) {
-            player.sendMessage(new TextComponentString("[Party] "+ message));
+            player.sendMessage(new TextComponentString("§b[Party] "+ message));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.lambdanum.raids.application;
 
 import com.lambdanum.raids.raid.controller.party.Party;
+import com.lambdanum.raids.raid.controller.party.PlayerAlreadyInAPartyException;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
 import java.util.List;
@@ -49,8 +50,17 @@ public class RaidPartyService {
     }
 
     public void inviteToParty(String hostPlayer, String invitedPlayer) {
+        if (isPlayerInAParty(invitedPlayer)) {
+            throw new PlayerAlreadyInAPartyException();
+        }
         Party hostParty = partyRepository.getPlayerParty(hostPlayer);
         EntityPlayer invitee = onlinePlayerService.getPlayerByUsername(invitedPlayer);
+
         hostParty.addPlayer(invitee);
+    }
+
+    public void tellParty(String name, String message) {
+        Party party = partyRepository.getPlayerParty(name);
+        party.broadcastToMembers(String.format("<%s> %s", name, message));
     }
 }

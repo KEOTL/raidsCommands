@@ -1,5 +1,7 @@
 package com.lambdanum.raids.application;
 
+import com.lambdanum.raids.raid.controller.party.OnlinePlayerNotFoundException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
@@ -12,7 +14,11 @@ public class OnlinePlayerService {
     }
 
     public EntityPlayer getPlayerByUsername(String playerName) {
-        return minecraftServer.getPlayerList().getPlayerByUsername(playerName);
+        EntityPlayer player = minecraftServer.getPlayerList().getPlayerByUsername(playerName);
+        if (player == null) {
+            throw new OnlinePlayerNotFoundException();
+        }
+        return player;
     }
 
     public boolean isPlayerOnline(String playerName) {

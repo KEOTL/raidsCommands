@@ -27,12 +27,12 @@ public class PartyInfoCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "party";
+        return "party-info";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "party";
+        return "party-info";
     }
 
     @Override
@@ -42,12 +42,12 @@ public class PartyInfoCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        sender.sendMessage(new TextComponentString("Currently in your party :"));
+        sender.sendMessage(new TextComponentString("§7" + "Currently in your party :"));
         for (String member : raidPartyService.getPartyMembers(sender.getName())) {
             if (onlinePlayerService.isPlayerOnline(member)) {
-                sender.sendMessage(new TextComponentString(member));
+                sender.sendMessage(new TextComponentString("§7" + member));
             } else {
-                sender.sendMessage(new TextComponentString("§4" + member + "(Offline)"));
+                sender.sendMessage(new TextComponentString("§c" + member + "(Offline)"));
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.lambdanum.raids.commands.raids.party;
 
 import com.lambdanum.raids.application.RaidPartyService;
+import com.lambdanum.raids.infrastructure.persistence.PlayerNotInsideAPartyException;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,24 +14,24 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import org.apache.commons.lang3.StringUtils;
 
-public class PartyLeaveCommand implements ICommand {
+public class TellPartyCommand implements ICommand {
 
     private RaidPartyService raidPartyService;
 
-    public PartyLeaveCommand(RaidPartyService raidPartyService) {
+    public TellPartyCommand(RaidPartyService raidPartyService) {
         this.raidPartyService = raidPartyService;
     }
 
     @Override
     public String getName() {
-        return "party-leave";
+        return "party";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "party-leave";
+        return "/party <message...>";
     }
 
     @Override
@@ -40,13 +41,17 @@ public class PartyLeaveCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        raidPartyService.removePlayerFromTheirParty(sender.getName());
-        sender.sendMessage(new TextComponentString("§7" + "Successfully left the party."));
+        String message = StringUtils.join(args, " ");
+        try {
+            raidPartyService.tellParty(sender.getName(), message);
+        } catch (PlayerNotInsideAPartyException e) {
+            throw new CommandException("You are not in a party!");
+        }
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return raidPartyService.isPlayerInAParty(sender.getName()) && sender instanceof EntityPlayer;
+        return sender instanceof EntityPlayer;
     }
 
     @Override

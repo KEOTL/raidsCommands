@@ -15,6 +15,7 @@ import com.lambdanum.raids.commands.raids.party.PartyCreateCommand;
 import com.lambdanum.raids.commands.raids.party.PartyInfoCommand;
 import com.lambdanum.raids.commands.raids.party.PartyInviteCommand;
 import com.lambdanum.raids.commands.raids.party.PartyLeaveCommand;
+import com.lambdanum.raids.commands.raids.party.TellPartyCommand;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 
 public class CommandBinder extends AbstractBinder {
@@ -36,5 +37,6 @@ public class CommandBinder extends AbstractBinder {
         bind(PartyInfoCommand.class).to(PartyInfoCommand.class);
         bind(PartyInviteCommand.class).to(PartyInviteCommand.class);
         bind(PartyLeaveCommand.class).to(PartyLeaveCommand.class);
+        bind(TellPartyCommand.class).to(TellPartyCommand.class);
     }
 }
