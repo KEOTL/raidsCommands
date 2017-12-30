@@ -44,6 +44,7 @@ public class VictoryCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        System.out.println(sender.getClass());
         return raidService.senderCanControlRaid(sender);
     }
 

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = "raids", version = "0.0.3a", acceptableRemoteVersions = "*")
+@Mod(modid = "raids", version = "0.0.3b", acceptableRemoteVersions = "*")
 @Mod.EventBusSubscriber
 public class RaidsMod {
 

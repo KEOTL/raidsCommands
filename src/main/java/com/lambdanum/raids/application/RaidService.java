@@ -19,7 +19,7 @@ import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntityCommandBlock;
+import net.minecraft.tileentity.CommandBlockBaseLogic;
 import org.apache.commons.lang3.StringUtils;
 
 public class RaidService {
@@ -61,8 +61,8 @@ public class RaidService {
         if (sender instanceof EntityPlayer) {
             return ((EntityPlayer) sender).dimension;
         }
-        if (sender instanceof TileEntityCommandBlock) {
-            return ((TileEntityCommandBlock) sender).getWorld().provider.getDimension();
+        if (sender instanceof CommandBlockBaseLogic) {
+            return sender.getEntityWorld().provider.getDimension();
         }
         if (sender instanceof RaidCommandSender) {
             return ((RaidCommandSender) sender).getDimension();
@@ -71,7 +71,7 @@ public class RaidService {
     }
 
     public boolean senderCanControlRaid(ICommandSender sender) {
-        return isInARaid(sender) && sender.canUseCommand(3, "");
+        return isInARaid(sender) && (sender.canUseCommand(3, "") || sender instanceof CommandBlockBaseLogic);
     }
 
     public void triggerDefeat(int dimension) {
