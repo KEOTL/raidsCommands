@@ -49,7 +49,7 @@ public class RaidController {
     }
 
     public boolean isRaidActive() {
-        return status == RaidStatus.STARTING_UP || party.areAllMembersInDimension(dimension);
+        return (status == RaidStatus.STARTING_UP || party.areAllMembersInDimension(dimension)) && !party.isEmpty();
     }
 
     public void startMapInitialization() {
