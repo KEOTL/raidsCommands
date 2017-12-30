@@ -4,7 +4,6 @@ import com.lambdanum.raids.model.Position;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.GameType;
 
 public class RaidExitService {
 
@@ -22,6 +21,5 @@ public class RaidExitService {
         Position overworldSpawn = new Position(minecraftServer.getWorld(0).getSpawnPoint());
         teleportService.teleportPlayerToDimension(player, 0, overworldSpawn);
         homeService.asyncTeleportPlayerToHome(player);
-        player.setGameType(GameType.SURVIVAL);
     }
 }

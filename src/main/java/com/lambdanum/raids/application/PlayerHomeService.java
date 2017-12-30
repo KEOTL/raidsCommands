@@ -4,6 +4,7 @@ import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.model.Position;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.GameType;
 
 public class PlayerHomeService {
 
@@ -19,6 +20,7 @@ public class PlayerHomeService {
         new Thread(() -> {
             Position playerHome = homeRepository.getPlayerHome(player.getName());
             teleportService.teleportPlayer(player, playerHome);
+            player.setGameType(GameType.SURVIVAL);
         }).start();
     }
 

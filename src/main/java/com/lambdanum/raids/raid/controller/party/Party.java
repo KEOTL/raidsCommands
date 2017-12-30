@@ -51,4 +51,12 @@ public class Party {
             player.get().addItemStackToInventory(new ItemStack(Item.getByNameOrId(lootItem.minecraftId), lootItem.amount));
         }
     }
+
+    public boolean containsPlayer(String playerName) {
+        return players.stream().map(EntityPlayer::getName).anyMatch(playerName::equals);
+    }
+
+    public void removePlayer(String playerName) {
+        players.removeIf(player -> player.getName().equals(playerName));
+    }
 }
