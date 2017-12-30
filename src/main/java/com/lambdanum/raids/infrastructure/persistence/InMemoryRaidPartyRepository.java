@@ -1,7 +1,5 @@
 package com.lambdanum.raids.infrastructure.persistence;
 
-import com.lambdanum.raids.application.OnlinePlayerService;
-import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.raid.controller.party.Party;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
@@ -51,10 +49,8 @@ public class InMemoryRaidPartyRepository implements RaidPartyRepository {
 
     public synchronized void deleteEmptyParties() {
         try {
-            OnlinePlayerService onlinePlayerService = ComponentLocator.INSTANCE.get(OnlinePlayerService.class);
             for (Party party : teams) {
-
-                if (party.isEmpty(onlinePlayerService)) {
+                if (party.isEmpty()) {
                     teams.remove(party);
                 }
             }

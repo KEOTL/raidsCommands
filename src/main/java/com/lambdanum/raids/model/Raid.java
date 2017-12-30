@@ -15,8 +15,10 @@ public class Raid {
     public final List<String> defeatScript;
     public final String rewardLootTableName;
     public final TeamLootType lootStrategy;
+    public final int minPlayers;
+    public final int maxPlayers;
 
-    public Raid(String name, int backupDimension, Region region, Position spawn, String rewardLootTableName, TeamLootType lootStrategy, List<String> startupScript, List<String> victoryScript, List<String> defeatScript) {
+    public Raid(String name, int backupDimension, Region region, Position spawn, String rewardLootTableName, TeamLootType lootStrategy, List<String> startupScript, List<String> victoryScript, List<String> defeatScript, int minPlayers, int maxPlayers) {
         this.name = name;
         this.backupDimension = backupDimension;
         this.region = region;
@@ -26,5 +28,7 @@ public class Raid {
         this.startupScript = startupScript;
         this.victoryScript = victoryScript;
         this.defeatScript = defeatScript;
+        this.minPlayers = minPlayers;
+        this.maxPlayers = maxPlayers;
     }
 }
