@@ -7,6 +7,7 @@ import com.lambdanum.raids.commands.HomeCommand;
 import com.lambdanum.raids.commands.LootCommand;
 import com.lambdanum.raids.commands.SetHomeCommand;
 import com.lambdanum.raids.commands.raids.DefeatCommand;
+import com.lambdanum.raids.commands.raids.ExitRaidCommand;
 import com.lambdanum.raids.commands.raids.StartRaidCommand;
 import com.lambdanum.raids.commands.VisitCommand;
 import com.lambdanum.raids.commands.raids.VictoryCommand;
@@ -26,5 +27,6 @@ public class CommandBinder extends ComponentLocator {
         bind(StartRaidCommand.class).to(StartRaidCommand.class);
         bind(VictoryCommand.class).to(VictoryCommand.class);
         bind(DefeatCommand.class).to(DefeatCommand.class);
+        bind(ExitRaidCommand.class).to(ExitRaidCommand.class);
     }
 }

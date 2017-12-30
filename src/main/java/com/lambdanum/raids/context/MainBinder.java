@@ -4,6 +4,7 @@ import com.lambdanum.raids.application.LootService;
 import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.application.PlayerHomeService;
 import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.application.RaidExitService;
 import com.lambdanum.raids.application.RaidService;
 import com.lambdanum.raids.application.SkyblockService;
 import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
@@ -45,6 +46,7 @@ public class MainBinder extends AbstractBinder {
         bind(RaidService.class).to(RaidService.class);
         bind(RaidObjectiveCommand.class).to(RaidObjectiveCommand.class);
         bind(RaidObjectiveAbstractFactory.class).to(RaidObjectiveAbstractFactory.class);
+        bind(RaidExitService.class).to(RaidExitService.class);
         install(UtilBinder.class);
         install(CommandBinder.class);
         install(LootingBinder.class);

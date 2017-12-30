@@ -23,7 +23,7 @@ public class InMemoryRaidRepository implements RaidRepository {
     private void initializeSampleData() {
         raids.put("raid1", new Raid("raid1", 30000, new Region(new Position(0,0,0), new Position(10,100,10)), new Position(0,100,0),
             "daily", TeamLootType.SHARED,
-            Arrays.asList("objective ask-item minecraft:chest 0 62 0 ?? echo raid is pleased ;; victory", "say welcome!"),
+            Arrays.asList("time set 0", "objective ask-item minecraft:chest 0 62 0 ?? echo raid is pleased ;; victory", "say welcome!"),
             Arrays.asList("you won!"), Arrays.asList("you lost :(")));
     }
 
