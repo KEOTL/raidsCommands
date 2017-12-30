@@ -5,9 +5,8 @@ import com.lambdanum.raids.context.config.ServerProperties;
 import com.lambdanum.raids.loot.LootTableProvider;
 import com.lambdanum.raids.model.LootItem;
 
+import java.util.Arrays;
 import java.util.List;
-
-import scala.actors.threadpool.Arrays;
 
 public class RestLootTableProvider implements LootTableProvider {
 
