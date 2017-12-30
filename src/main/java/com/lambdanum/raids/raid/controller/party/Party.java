@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
 
 public class Party {
@@ -22,7 +23,16 @@ public class Party {
     }
 
     public synchronized void addPlayer(EntityPlayer player) {
-        players.add(player);
+        if (!players.contains(player)) {
+            players.add(player);
+            broadcastToMembers(player.getName() + " has been added to the party.");
+        }
+    }
+
+    public void broadcastToMembers(String message) {
+        for (EntityPlayer player : players) {
+            player.sendMessage(new TextComponentString(message));
+        }
     }
 
     public boolean areAllMembersInDimension(int dimension) {
@@ -42,7 +52,7 @@ public class Party {
     }
 
     public List<String> getPlayers() {
-        return players.stream().map(EntityPlayer::getName).collect(Collectors.toList());
+        return players.stream().filter(i -> i != null).map(EntityPlayer::getName).collect(Collectors.toList());
     }
 
     public void giveToPlayer(String playerName, LootItem lootItem) {
@@ -58,5 +68,6 @@ public class Party {
 
     public void removePlayer(String playerName) {
         players.removeIf(player -> player.getName().equals(playerName));
+        broadcastToMembers(playerName + " has left the party.");
     }
 }

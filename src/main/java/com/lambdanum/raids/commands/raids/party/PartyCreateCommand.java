@@ -15,22 +15,22 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
-public class CreatePartyCommand implements ICommand {
+public class PartyCreateCommand implements ICommand {
 
     private RaidPartyService raidPartyService;
 
-    public CreatePartyCommand(RaidPartyService raidPartyService) {
+    public PartyCreateCommand(RaidPartyService raidPartyService) {
         this.raidPartyService = raidPartyService;
     }
 
     @Override
     public String getName() {
-        return "create-party";
+        return "party-create";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "create-party";
+        return "party-create";
     }
 
     @Override
@@ -45,6 +45,7 @@ public class CreatePartyCommand implements ICommand {
             sender.sendMessage(new TextComponentString("You are already in a party."));
         } else {
             raidPartyService.createParty(player);
+            sender.sendMessage(new TextComponentString("Party created."));
         }
     }
 

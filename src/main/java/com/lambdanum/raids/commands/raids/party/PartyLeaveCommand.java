@@ -14,22 +14,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
-public class LeavePartyCommand implements ICommand {
+public class PartyLeaveCommand implements ICommand {
 
-    private RaidPartyService partyService;
+    private RaidPartyService raidPartyService;
 
-    public LeavePartyCommand(RaidPartyService partyService) {
-        this.partyService = partyService;
+    public PartyLeaveCommand(RaidPartyService raidPartyService) {
+        this.raidPartyService = raidPartyService;
     }
 
     @Override
     public String getName() {
-        return "leave-party";
+        return "party-leave";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "leave-party";
+        return "party-leave";
     }
 
     @Override
@@ -39,12 +39,12 @@ public class LeavePartyCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        partyService.removePlayerFromTheirParty(sender.getName());
+        raidPartyService.removePlayerFromTheirParty(sender.getName());
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return sender instanceof EntityPlayer && partyService.isPlayerInAParty(sender.getName());
+        return raidPartyService.isPlayerInAParty(sender.getName()) && sender instanceof EntityPlayer;
     }
 
     @Override
