@@ -1,10 +1,12 @@
 package com.lambdanum.raids.raid.controller.party;
 
+import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.application.PlayerTeleportService;
 import com.lambdanum.raids.model.LootItem;
 import com.lambdanum.raids.model.Position;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -69,5 +71,9 @@ public class Party {
     public void removePlayer(String playerName) {
         players.removeIf(player -> player.getName().equals(playerName));
         broadcastToMembers(playerName + " has left the party.");
+    }
+
+    public boolean isEmpty(OnlinePlayerService onlinePlayerService) {
+        return players.stream().filter(Objects::nonNull).filter(player -> onlinePlayerService.isPlayerOnline(player.getName())).collect(Collectors.toList()).isEmpty();
     }
 }

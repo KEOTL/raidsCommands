@@ -10,5 +10,5 @@ public interface RaidPartyRepository {
 
     Party createPartyWithPlayer(EntityPlayer player);
 
-    void deleteParty(String playerName);
+    void deleteParty(Party party);
 }

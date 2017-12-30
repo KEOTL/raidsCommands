@@ -14,4 +14,8 @@ public class OnlinePlayerService {
     public EntityPlayer getPlayerByUsername(String playerName) {
         return minecraftServer.getPlayerList().getPlayerByUsername(playerName);
     }
+
+    public boolean isPlayerOnline(String playerName) {
+        return getPlayerByUsername(playerName) != null;
+    }
 }

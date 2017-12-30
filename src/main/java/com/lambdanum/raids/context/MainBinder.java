@@ -50,12 +50,13 @@ public class MainBinder extends AbstractBinder {
         bind(RaidObjectiveAbstractFactory.class).to(RaidObjectiveAbstractFactory.class);
         bind(RaidExitService.class).to(RaidExitService.class);
         bind(RaidPartyService.class).to(RaidPartyService.class);
-        bind(new InMemoryRaidPartyRepository()).to(RaidPartyRepository.class);
+
         bind(SingleDedicatedPlayDimensionRepository.class).to(RaidPlayDimensionRepository.class);
         install(UtilBinder.class);
         install(CommandBinder.class);
         install(LootingBinder.class);
 
         bind(new RaidControllerProviderProvider()).to(RaidControllerProvider.class);
+        bind(new InMemoryRaidPartyRepository()).to(RaidPartyRepository.class);
     }
 }

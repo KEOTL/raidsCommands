@@ -32,6 +32,9 @@ public class RaidPartyService {
         if (raidService.isInARaid(player)) {
             raidExitService.sendPlayerHome(player);
         }
+        if (party.isEmpty(onlinePlayerService)) {
+            partyRepository.deleteParty(party);
+        }
     }
 
 
