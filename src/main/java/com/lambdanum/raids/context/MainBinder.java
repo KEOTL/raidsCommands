@@ -11,12 +11,10 @@ import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
 import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidRepository;
-import com.lambdanum.raids.infrastructure.persistence.RestLootTableProvider;
 import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
-import com.lambdanum.raids.loot.LootTableProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.raid.controller.RaidRepository;
@@ -39,7 +37,6 @@ public class MainBinder extends AbstractBinder {
         bind(PlayerTeleportService.class).to(PlayerTeleportService.class);
         bind(PlayerHomeService.class).to(PlayerHomeService.class);
         bind(RestPlayerHomeRepository.class).to(PlayerHomeRepository.class);
-        bind(RestLootTableProvider.class).to(LootTableProvider.class);
         bind(LootService.class).to(LootService.class);
         bind(OnlinePlayerService.class).to(OnlinePlayerService.class);
         bind(SkyblockService.class).to(SkyblockService.class);
@@ -50,7 +47,7 @@ public class MainBinder extends AbstractBinder {
         bind(RaidObjectiveAbstractFactory.class).to(RaidObjectiveAbstractFactory.class);
         install(UtilBinder.class);
         install(CommandBinder.class);
-
+        install(LootingBinder.class);
 
         bind(new RaidControllerProviderProvider()).to(RaidControllerProvider.class);
     }

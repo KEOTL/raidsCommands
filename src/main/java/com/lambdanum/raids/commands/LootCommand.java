@@ -23,12 +23,12 @@ public class LootCommand implements ICommand {
 
     @Override
     public String getName() {
-        return "loot";
+        return "distributeLoot";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "loot";
+        return "distributeLoot";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class LootCommand implements ICommand {
         String playerName = args[0];
         String lootTable = args[1];
 
-        lootService.asyncLoot(playerName, lootTable);
+        lootService.asyncDistributeLoot(playerName, lootTable);
     }
 
     @Override

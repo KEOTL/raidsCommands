@@ -41,7 +41,7 @@ public class DailyCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)sender;
-            lootService.asyncLoot(player.getName(), "daily");
+            lootService.asyncDistributeLoot(player.getName(), "daily");
         }
     }
 

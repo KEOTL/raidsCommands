@@ -1,5 +1,6 @@
 package com.lambdanum.raids.raid.controller;
 
+import com.lambdanum.raids.application.LootService;
 import com.lambdanum.raids.application.PlayerTeleportService;
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
@@ -9,7 +10,7 @@ import com.lambdanum.raids.model.Raid;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.party.Party;
 
-import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
@@ -21,6 +22,7 @@ public class RaidController {
     private final RegionCloner regionCloner = ComponentLocator.INSTANCE.get(RegionCloner.class);
     private final PlayerTeleportService teleportService = ComponentLocator.INSTANCE.get(PlayerTeleportService.class);
     private final MinecraftServer minecraftServer = ComponentLocator.INSTANCE.get(MinecraftServer.class);
+    private final LootService lootService = ComponentLocator.INSTANCE.get(LootService.class);
 
     private Raid raid;
     private final int dimension;
@@ -68,11 +70,11 @@ public class RaidController {
         logger.log("teleported players to play dimension " + dimension);
         status = RaidStatus.RUNNING;
 
-        executeStartupScript(raid.startupScript);
+        executeScript(raid.startupScript);
     }
 
-    private void executeStartupScript(String[] startupScript) {
-        Arrays.stream(startupScript).forEach(this::executeCommandInRaid);
+    private void executeScript(List<String> script) {
+        script.forEach(this::executeCommandInRaid);
     }
 
     public void executeCommandInRaid(String command) {
@@ -92,15 +94,17 @@ public class RaidController {
         logger.log("stopping all objective pollers");
         objectiveController.stopAllPollers();
         logger.log("done stopping objective pollers");
+        status = RaidStatus.STOPPED;
     }
 
     public void triggerDefeat() {
-        logger.log("you lose!");
-        logger.log("todo: actually do something here");
+        status = RaidStatus.DEFEAT;
+        executeScript(raid.defeatScript);
     }
 
     public void triggerVictory() {
-        logger.log("you win!");
-        logger.log("todo: actually do something here");
+        status = RaidStatus.VICTORY;
+        lootService.asyncDistributeTeamLoot(party, raid);
+        executeScript(raid.victoryScript);
     }
 }

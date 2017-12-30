@@ -37,7 +37,7 @@ public class RestLootTableProviderTest {
     @Test
     public void whenRollingLoot_thenCallsServerWithProperSyntax() {
         LootItem[] expectedItems = new LootItem[] {new LootItem()};
-        when(httpHelper.get(SERVER_URL + "/loot/table?username=" + PLAYER_NAME, LootItem[].class)).thenReturn(expectedItems);
+        when(httpHelper.get(SERVER_URL + "/distributeLoot/table?username=" + PLAYER_NAME, LootItem[].class)).thenReturn(expectedItems);
 
         List<LootItem> table = lootTableProvider.roll("table", PLAYER_NAME);
 

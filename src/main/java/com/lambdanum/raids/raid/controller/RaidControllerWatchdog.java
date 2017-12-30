@@ -11,7 +11,7 @@ public class RaidControllerWatchdog implements Runnable {
 
     private Map<Integer, RaidController> raidControllers;
 
-    private boolean exit = false;
+    private volatile boolean exit = false;
 
     public RaidControllerWatchdog(Map<Integer, RaidController> raidControllers) {
         this.raidControllers = raidControllers;
