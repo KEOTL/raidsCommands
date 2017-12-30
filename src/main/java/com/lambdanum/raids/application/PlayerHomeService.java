@@ -16,12 +16,10 @@ public class PlayerHomeService {
         this.homeRepository = homeRepository;
     }
 
-    public void asyncTeleportPlayerToHome(EntityPlayer player) {
-        new Thread(() -> {
-            Position playerHome = homeRepository.getPlayerHome(player.getName());
-            teleportService.teleportPlayer(player, playerHome);
-            player.setGameType(GameType.SURVIVAL);
-        }).start();
+    public void teleportPlayerToHome(EntityPlayer player) {
+        Position playerHome = homeRepository.getPlayerHome(player.getName());
+        teleportService.teleportPlayer(player, playerHome);
+        player.setGameType(GameType.SURVIVAL);
     }
 
     public void asyncSetPlayerHome(String playerName, Position home) {

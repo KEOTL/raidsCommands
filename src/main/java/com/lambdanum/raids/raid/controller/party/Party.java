@@ -7,6 +7,7 @@ import com.lambdanum.raids.model.LootItem;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Raid;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,10 +16,13 @@ import java.util.stream.Collectors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.GameType;
 
 public class Party {
+
+    public static final Party EMPTY_PARTY = new Party(Collections.emptyList());
 
     private final OnlinePlayerService onlinePlayerService = ComponentLocator.INSTANCE.get(OnlinePlayerService.class);
 
@@ -81,8 +85,29 @@ public class Party {
         return players.stream().filter(Objects::nonNull).filter(player -> onlinePlayerService.isPlayerOnline(player.getName())).collect(Collectors.toList()).isEmpty();
     }
 
-    public boolean canEnterRaid(Raid raid) {
+    public boolean hasAppropriatePlayerCount(Raid raid) {
         long playerCount = players.stream().filter(player -> onlinePlayerService.isPlayerOnline(player.getName())).count();
         return playerCount >= raid.minPlayers && playerCount <= raid.maxPlayers;
+    }
+
+    public boolean arePlayersCarryingOnlyAllowedItemsForRaid(Raid raid) {
+        List<String> allowedItems = raid.allowedItems;
+        for (EntityPlayer player : players) {
+            if (isPlayerCarryingDisallowedItems(player, allowedItems)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isPlayerCarryingDisallowedItems(EntityPlayer player, List<String> allowedItems) {
+        return inventoryContainsDisallowedItems(player.inventory.mainInventory, allowedItems)
+            || inventoryContainsDisallowedItems(player.inventory.armorInventory, allowedItems)
+            || inventoryContainsDisallowedItems(player.inventory.offHandInventory, allowedItems);
+    }
+
+    private boolean inventoryContainsDisallowedItems(List<ItemStack> inventory, List<String> allowedItems) {
+        return inventory.stream().map(ItemStack::getItem).map(Item::getRegistryName)
+            .map(ResourceLocation::toString).anyMatch(carriedItem -> !allowedItems.contains(carriedItem) && !"minecraft:air".equals(carriedItem));
     }
 }

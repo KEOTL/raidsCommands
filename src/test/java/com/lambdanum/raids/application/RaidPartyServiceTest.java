@@ -44,6 +44,6 @@ public class RaidPartyServiceTest {
 
         raidPartyService.removePlayerFromTheirParty(PLAYER_NAME);
 
-        verify(homeService).asyncTeleportPlayerToHome(player);
+        verify(homeService).teleportPlayerToHome(player);
     }
 }

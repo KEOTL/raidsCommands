@@ -11,4 +11,6 @@ public interface RaidPartyRepository {
     Party createPartyWithPlayer(EntityPlayer player);
 
     void deleteParty(Party party);
+
+    boolean contains(Party party);
 }

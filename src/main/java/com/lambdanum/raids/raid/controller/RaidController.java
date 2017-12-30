@@ -9,6 +9,7 @@ import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
 import com.lambdanum.raids.model.Raid;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.party.Party;
+import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
 import java.util.List;
 
@@ -101,7 +102,14 @@ public class RaidController {
 
     public void triggerVictory() {
         status = RaidStatus.VICTORY;
-        lootService.asyncDistributeTeamLoot(party, raid);
         executeScript(raid.victoryScript);
+        lootService.asyncDistributeTeamLoot(party, raid);
+    }
+
+    public void resynchronizePartyWithRepository(RaidPartyRepository raidPartyRepository) {
+        if (!raidPartyRepository.contains(party)) {
+            party = Party.EMPTY_PARTY;
+            logger.log("raid controller on dimension " + dimension + " is inconsistent with PartyRepository. Forcing empty party.");
+        }
     }
 }

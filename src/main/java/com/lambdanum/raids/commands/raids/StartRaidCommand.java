@@ -2,6 +2,7 @@ package com.lambdanum.raids.commands.raids;
 
 import com.lambdanum.raids.application.RaidService;
 import com.lambdanum.raids.raid.RaidAlreadyActiveOnDimensionException;
+import com.lambdanum.raids.raid.controller.DisallowedItemsInInventoryException;
 import com.lambdanum.raids.raid.controller.IncorrectNumberOfPlayersException;
 
 import java.util.Collections;
@@ -51,6 +52,8 @@ public class StartRaidCommand implements ICommand {
             throw new CommandException("Raid already active on play dimension. (No play dimensions available.) Aborting.");
         } catch (IncorrectNumberOfPlayersException e) {
             throw new CommandException("Incorrect number of players. Your party is either too large or too small.");
+        }catch (DisallowedItemsInInventoryException e) {
+            throw new CommandException("Players are carrying disallowed items. Please empty your inventory before entering a raid.");
         }
     }
 

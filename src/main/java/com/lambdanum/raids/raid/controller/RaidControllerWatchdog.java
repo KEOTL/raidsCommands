@@ -2,6 +2,7 @@ package com.lambdanum.raids.raid.controller;
 
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
+import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
 import java.util.Map;
 
@@ -40,6 +41,9 @@ public class RaidControllerWatchdog implements Runnable {
                 controller.stop();
                 raidControllers.remove(dimension);
                 logger.log(String.format("cleared inactive raid %s on dimension %d", controller.getRaidName(), dimension));
+            } else {
+                RaidPartyRepository raidPartyRepository = ComponentLocator.INSTANCE.get(RaidPartyRepository.class);
+                controller.resynchronizePartyWithRepository(raidPartyRepository);
             }
         }
     }

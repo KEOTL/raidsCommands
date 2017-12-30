@@ -20,6 +20,6 @@ public class RaidExitService {
     public void sendPlayerHome(EntityPlayer player) {
         Position overworldSpawn = new Position(minecraftServer.getWorld(0).getSpawnPoint());
         teleportService.teleportPlayerToDimension(player, 0, overworldSpawn);
-        homeService.asyncTeleportPlayerToHome(player);
+        homeService.teleportPlayerToHome(player);
     }
 }

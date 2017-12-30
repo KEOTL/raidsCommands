@@ -41,7 +41,7 @@ public class HomeCommand implements ICommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) sender;
-            homeService.asyncTeleportPlayerToHome(player);
+            homeService.teleportPlayerToHome(player);
         }
     }
 

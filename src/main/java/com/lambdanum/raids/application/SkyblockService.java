@@ -31,7 +31,7 @@ public class SkyblockService {
             player.setPosition(playerPosition.x, playerPosition.y + 2, playerPosition.z);
             lootService.distributeLoot(playerName, "startup");
             homeService.asyncSetPlayerHome(playerName, new Position(playerPosition.x - 1, playerPosition.y + 1, playerPosition.z));
-            homeService.asyncTeleportPlayerToHome(player);
+            homeService.teleportPlayerToHome(player);
             skyblockUserRepository.setUserHasAlreadyGeneratedIsland(playerName);
         }).start();
     }

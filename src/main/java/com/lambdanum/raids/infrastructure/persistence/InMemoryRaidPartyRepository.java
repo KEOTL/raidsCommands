@@ -47,6 +47,11 @@ public class InMemoryRaidPartyRepository implements RaidPartyRepository {
         teams.remove(party);
     }
 
+    @Override
+    public boolean contains(Party party) {
+        return teams.contains(party);
+    }
+
     public synchronized void deleteEmptyParties() {
         try {
             for (Party party : teams) {
