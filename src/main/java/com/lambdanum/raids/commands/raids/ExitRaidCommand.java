@@ -48,7 +48,7 @@ public class ExitRaidCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return sender instanceof EntityPlayer && raidService.isInARaid(sender);
+        return sender instanceof EntityPlayer && raidService.isInARaid(sender) || (!raidService.isInARaid(sender) && raidService.getSenderDimension(sender) > 30000);
     }
 
     @Override

@@ -45,4 +45,13 @@ public class RaidObjectiveAbstractFactoryTest {
         assertEquals("minecraft:chest", askItem.getAskedItem());
     }
 
+    @Test
+    public void whenGettingBringPlayerObjective_thenBringPlayerIsProperlyCreated() {
+        String command = "bring-player 0 62 0";
+
+        ObjectivePoller objectivePoller = objectiveAbstractFactory.create(subscriber, command);
+
+        assertTrue(objectivePoller instanceof BringPlayerObjectivePoller);
+    }
+
 }
