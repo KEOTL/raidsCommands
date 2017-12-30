@@ -21,7 +21,7 @@ public class RestLootTableProvider implements LootTableProvider {
 
     @Override
     public List<LootItem> roll(String tableName, String playerName) {
-        LootItem[] items = httpHelper.get(serverUrl + "/distributeLoot/" + tableName + "?username=" + playerName.replace(" ", ""), LootItem[].class);
+        LootItem[] items = httpHelper.get(serverUrl + "/loot/" + tableName + "?username=" + playerName.replace(" ", ""), LootItem[].class);
         return Arrays.asList(items);
     }
 }
