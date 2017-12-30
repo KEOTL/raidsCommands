@@ -56,7 +56,7 @@ public class MainBinder extends AbstractBinder {
         install(CommandBinder.class);
         install(LootingBinder.class);
 
-        bind(new RaidControllerProviderProvider()).to(RaidControllerProvider.class);
+        bind(new RaidControllerProviderSingletonProvider()).to(RaidControllerProvider.class);
         bind(new InMemoryRaidPartyRepository()).to(RaidPartyRepository.class);
     }
 }

@@ -5,7 +5,7 @@ import com.lambdanum.raids.infrastructure.injection.RuntimeProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.RaidRepository;
 
-public class RaidControllerProviderProvider implements RuntimeProvider<RaidControllerProvider> {
+public class RaidControllerProviderSingletonProvider implements RuntimeProvider<RaidControllerProvider> {
 
     private RaidControllerProvider raidControllerProvider;
 
