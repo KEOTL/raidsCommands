@@ -2,8 +2,6 @@ package com.lambdanum.raids.infrastructure.utils.minecraft;
 
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Region;
-import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
-import com.lambdanum.raids.infrastructure.injection.McLogger;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.ICommandSender;
@@ -15,10 +13,11 @@ import net.minecraft.world.WorldServer;
 
 public class RegionCloner {
 
-    private final McLogger logger = ComponentLocator.INSTANCE.get(McLogger.class);
+    private final DebugMcLogger logger;
     private MinecraftServer minecraftServer;
 
-    public RegionCloner(MinecraftServer minecraftServer) {
+    public RegionCloner(DebugMcLogger logger, MinecraftServer minecraftServer) {
+        this.logger = logger;
         this.minecraftServer = minecraftServer;
     }
 

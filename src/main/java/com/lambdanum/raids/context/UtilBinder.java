@@ -4,7 +4,11 @@ import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
 import com.lambdanum.raids.context.config.ServerProperties;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
+import com.lambdanum.raids.infrastructure.injection.McLogger;
+import com.lambdanum.raids.infrastructure.utils.minecraft.DebugMcLogger;
+import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.RegionCloner;
+import com.lambdanum.raids.infrastructure.utils.minecraft.SystemOutputLogger;
 import com.lambdanum.raids.script.NestedCommandParser;
 
 public class UtilBinder extends AbstractBinder {
@@ -15,5 +19,9 @@ public class UtilBinder extends AbstractBinder {
         bind(HttpHelper.class).to(HttpHelper.class);
         bind(ServerProperties.class).to(ServerProperties.class);
         bind(NestedCommandParser.class).to(NestedCommandParser.class);
+
+        bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
+        bind(MinecraftBroadcastLogger.class).to(McLogger.class);
+        bind(SystemOutputLogger.class).to(DebugMcLogger.class);
     }
 }

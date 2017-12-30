@@ -17,7 +17,7 @@ public class RaidCommandSender implements ICommandSender {
 
     @Override
     public String getName() {
-        return "raid sender on dimension " + worldServer.provider.getDimension();
+        return "Raid";
     }
 
     @Override

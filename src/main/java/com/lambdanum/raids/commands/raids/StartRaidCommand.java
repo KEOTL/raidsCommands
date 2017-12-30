@@ -1,16 +1,10 @@
 package com.lambdanum.raids.commands.raids;
 
-import com.lambdanum.raids.application.OnlinePlayerService;
-import com.lambdanum.raids.infrastructure.injection.McLogger;
-import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
-import com.lambdanum.raids.raid.controller.RaidController;
-import com.lambdanum.raids.raid.controller.RaidControllerProvider;
-import com.lambdanum.raids.raid.controller.party.Party;
+import com.lambdanum.raids.application.RaidService;
+import com.lambdanum.raids.raid.RaidAlreadyActiveOnDimensionException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -23,14 +17,10 @@ import net.minecraft.util.math.BlockPos;
 
 public class StartRaidCommand implements ICommand {
 
-    private RaidControllerProvider raidControllerProvider;
-    private McLogger logger;
-    private OnlinePlayerService onlinePlayerService;
+    private RaidService raidService;
 
-    public StartRaidCommand(RaidControllerProvider raidControllerProvider, MinecraftBroadcastLogger logger, OnlinePlayerService onlinePlayerService) {
-        this.raidControllerProvider = raidControllerProvider;
-        this.logger = logger;
-        this.onlinePlayerService = onlinePlayerService;
+    public StartRaidCommand(RaidService raidService) {
+        this.raidService = raidService;
     }
 
     @Override
@@ -53,35 +43,17 @@ public class StartRaidCommand implements ICommand {
         if (args.length < 1) {
             return;
         }
-        int playDimension = 0;
-
         String raidName = args[0];
-        if (args.length > 1) {
-            playDimension = Integer.parseInt(args[1]);
+        try {
+            raidService.startRaid(sender, raidName);
+        } catch (RaidAlreadyActiveOnDimensionException e) {
+            throw new CommandException("raid already active on play dimension. (No play dimensions available.) Aborting.");
         }
-        List<String> playerNames = new ArrayList<>();
-
-        if (args.length > 2) {
-            for (int i = 2; i < args.length; i++) {
-                playerNames.add(args[i]);
-            }
-        } else {
-            playerNames.add(sender.getName());
-        }
-
-        if (raidControllerProvider.isRaidActiveInDimension(playDimension)) {
-            logger.log("warning: raid already active in dimension " + playDimension + ". Aborting.");
-            return;
-        }
-
-        List<EntityPlayer> players = playerNames.stream().map(onlinePlayerService::getPlayerByUsername).collect(Collectors.toList());
-        RaidController controller = raidControllerProvider.createController(raidName, playDimension, new Party(players));
-        controller.startMapInitialization();
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return sender.canUseCommand(3, "");
+        return sender instanceof EntityPlayer && ((EntityPlayer) sender).dimension == 0;
     }
 
     @Override

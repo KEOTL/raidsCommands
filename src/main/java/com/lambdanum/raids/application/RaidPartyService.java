@@ -11,14 +11,14 @@ public class RaidPartyService {
 
     private RaidPartyRepository partyRepository;
     private OnlinePlayerService onlinePlayerService;
-    private PlayerHomeService homeService;
     private RaidService raidService;
+    private RaidExitService raidExitService;
 
-    public RaidPartyService(RaidPartyRepository partyRepository, OnlinePlayerService onlinePlayerService, PlayerHomeService homeService, RaidService raidService) {
+    public RaidPartyService(RaidPartyRepository partyRepository, OnlinePlayerService onlinePlayerService, RaidService raidService, RaidExitService raidExitService) {
         this.partyRepository = partyRepository;
         this.onlinePlayerService = onlinePlayerService;
-        this.homeService = homeService;
         this.raidService = raidService;
+        this.raidExitService = raidExitService;
     }
 
     public boolean isPlayerInAParty(String playerName) {
@@ -30,7 +30,7 @@ public class RaidPartyService {
         party.removePlayer(playerName);
         EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
         if (raidService.isInARaid(player)) {
-            homeService.asyncTeleportPlayerToHome(player);
+            raidExitService.sendPlayerHome(player);
         }
     }
 

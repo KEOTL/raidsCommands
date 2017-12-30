@@ -11,16 +11,16 @@ import com.lambdanum.raids.application.SkyblockService;
 import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
 import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
-import com.lambdanum.raids.infrastructure.injection.McLogger;
 import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidPartyRepository;
 import com.lambdanum.raids.infrastructure.persistence.InMemoryRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
-import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftBroadcastLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerProvider;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
+import com.lambdanum.raids.raid.controller.RaidPlayDimensionRepository;
 import com.lambdanum.raids.raid.controller.RaidRepository;
+import com.lambdanum.raids.raid.controller.SingleDedicatedPlayDimensionRepository;
 import com.lambdanum.raids.raid.controller.objective.RaidObjectiveAbstractFactory;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 import com.lambdanum.raids.skyblock.IslandGenerationStrategy;
@@ -35,8 +35,7 @@ public class MainBinder extends AbstractBinder {
         bind(InMemoryRaidRepository.class).to(RaidRepository.class);
 
         bind(new MinecraftServerProvider()).to(MinecraftServer.class);
-        bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);
-        bind(MinecraftBroadcastLogger.class).to(McLogger.class);
+
         bind(RaidControllerWatchdog.class).to(RaidControllerWatchdog.class);
         bind(PlayerTeleportService.class).to(PlayerTeleportService.class);
         bind(PlayerHomeService.class).to(PlayerHomeService.class);
@@ -52,6 +51,7 @@ public class MainBinder extends AbstractBinder {
         bind(RaidExitService.class).to(RaidExitService.class);
         bind(RaidPartyService.class).to(RaidPartyService.class);
         bind(new InMemoryRaidPartyRepository()).to(RaidPartyRepository.class);
+        bind(SingleDedicatedPlayDimensionRepository.class).to(RaidPlayDimensionRepository.class);
         install(UtilBinder.class);
         install(CommandBinder.class);
         install(LootingBinder.class);
