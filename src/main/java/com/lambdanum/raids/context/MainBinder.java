@@ -16,7 +16,7 @@ import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
-import com.lambdanum.raids.raid.controller.RaidControllerProvider;
+import com.lambdanum.raids.raid.controller.RaidControllerRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.raid.controller.RaidPlayDimensionRepository;
 import com.lambdanum.raids.raid.controller.RaidRepository;
@@ -56,7 +56,7 @@ public class MainBinder extends AbstractBinder {
         install(CommandBinder.class);
         install(LootingBinder.class);
 
-        bind(new RaidControllerProviderSingletonProvider()).to(RaidControllerProvider.class);
+        bind(new RaidControllerProviderSingletonProvider()).to(RaidControllerRepository.class);
         bind(new InMemoryRaidPartyRepository()).to(RaidPartyRepository.class);
     }
 }

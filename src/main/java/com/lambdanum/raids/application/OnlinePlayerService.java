@@ -22,6 +22,11 @@ public class OnlinePlayerService {
     }
 
     public boolean isPlayerOnline(String playerName) {
-        return getPlayerByUsername(playerName) != null;
+        try {
+            getPlayerByUsername(playerName);
+            return true;
+        } catch (OnlinePlayerNotFoundException e) {
+            return false;
+        }
     }
 }

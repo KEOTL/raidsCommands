@@ -6,13 +6,13 @@ import com.lambdanum.raids.raid.controller.party.Party;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RaidControllerProvider {
+public class RaidControllerRepository {
 
     private Map<Integer, RaidController> raidControllers;
     private RaidRepository raidRepository;
     private Thread watchdog;
 
-    public RaidControllerProvider(RaidRepository raidRepository) {
+    public RaidControllerRepository(RaidRepository raidRepository) {
         this.raidRepository = raidRepository;
         raidControllers = new ConcurrentHashMap<>();
         watchdog = new Thread(new RaidControllerWatchdog(raidControllers));

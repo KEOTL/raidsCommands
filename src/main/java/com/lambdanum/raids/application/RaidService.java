@@ -5,7 +5,7 @@ import com.lambdanum.raids.infrastructure.utils.minecraft.DebugMcLogger;
 import com.lambdanum.raids.raid.RaidAlreadyActiveOnDimensionException;
 import com.lambdanum.raids.raid.controller.RaidCommandSender;
 import com.lambdanum.raids.raid.controller.RaidController;
-import com.lambdanum.raids.raid.controller.RaidControllerProvider;
+import com.lambdanum.raids.raid.controller.RaidControllerRepository;
 import com.lambdanum.raids.raid.controller.RaidPlayDimensionRepository;
 import com.lambdanum.raids.raid.controller.objective.ObjectivePoller;
 import com.lambdanum.raids.raid.controller.objective.RaidObjectiveAbstractFactory;
@@ -24,15 +24,15 @@ import org.apache.commons.lang3.StringUtils;
 
 public class RaidService {
 
-    private RaidControllerProvider raidControllerProvider;
+    private RaidControllerRepository raidControllerRepository;
     private RaidObjectiveAbstractFactory objectiveAbstractFactory;
     private McLogger logger;
     private NestedCommandParser commandParser;
     private RaidPlayDimensionRepository playDimensionRepository;
     private RaidPartyRepository raidPartyRepository;
 
-    public RaidService(RaidControllerProvider raidControllerProvider, RaidObjectiveAbstractFactory objectiveAbstractFactory, DebugMcLogger logger, NestedCommandParser commandParser, RaidPlayDimensionRepository playDimensionRepository, RaidPartyRepository raidPartyRepository) {
-        this.raidControllerProvider = raidControllerProvider;
+    public RaidService(RaidControllerRepository raidControllerRepository, RaidObjectiveAbstractFactory objectiveAbstractFactory, DebugMcLogger logger, NestedCommandParser commandParser, RaidPlayDimensionRepository playDimensionRepository, RaidPartyRepository raidPartyRepository) {
+        this.raidControllerRepository = raidControllerRepository;
         this.objectiveAbstractFactory = objectiveAbstractFactory;
         this.logger = logger;
         this.commandParser = commandParser;
@@ -43,7 +43,7 @@ public class RaidService {
     public void addObjective(int dimension, List<String> args) {
         ScriptCommand scriptCommand = commandParser.parse(StringUtils.join(args, " "));
 
-        RaidController controller = raidControllerProvider.getController(dimension);
+        RaidController controller = raidControllerRepository.getController(dimension);
         ServerCommandObjectiveSubscriber callbackOnObjectiveCompletion = new ServerCommandObjectiveSubscriber(scriptCommand.ifStatements, controller);
         ObjectivePoller objective = objectiveAbstractFactory.create(callbackOnObjectiveCompletion, scriptCommand.conditionClause);
 
@@ -54,7 +54,7 @@ public class RaidService {
 
     public boolean isInARaid(ICommandSender sender) {
         int dimension = getSenderDimension(sender);
-        return raidControllerProvider.isRaidActiveInDimension(dimension);
+        return raidControllerRepository.isRaidActiveInDimension(dimension);
     }
 
     public int getSenderDimension(ICommandSender sender) {
@@ -75,22 +75,22 @@ public class RaidService {
     }
 
     public void triggerDefeat(int dimension) {
-        RaidController controller = raidControllerProvider.getController(dimension);
+        RaidController controller = raidControllerRepository.getController(dimension);
         controller.triggerDefeat();
     }
 
     public void triggerVictory(int dimension) {
-        RaidController controller = raidControllerProvider.getController(dimension);
+        RaidController controller = raidControllerRepository.getController(dimension);
         controller.triggerVictory();
     }
 
     public void startRaid(ICommandSender sender, String raidName) {
         int playDimension = playDimensionRepository.getAvailablePlayDimension();
-        if (raidControllerProvider.isRaidActiveInDimension(playDimension)) {
+        if (raidControllerRepository.isRaidActiveInDimension(playDimension)) {
             throw new RaidAlreadyActiveOnDimensionException();
         }
         Party party = raidPartyRepository.getPlayerParty(sender.getName());
-        RaidController controller = raidControllerProvider.createController(raidName, playDimension, party);
+        RaidController controller = raidControllerRepository.createController(raidName, playDimension, party);
         controller.startMapInitialization();
     }
 }

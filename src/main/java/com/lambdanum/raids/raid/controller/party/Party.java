@@ -7,6 +7,7 @@ import com.lambdanum.raids.model.LootItem;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Raid;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -109,5 +110,19 @@ public class Party {
     private boolean inventoryContainsDisallowedItems(List<ItemStack> inventory, List<String> allowedItems) {
         return inventory.stream().map(ItemStack::getItem).map(Item::getRegistryName)
             .map(ResourceLocation::toString).anyMatch(carriedItem -> !allowedItems.contains(carriedItem) && !"minecraft:air".equals(carriedItem));
+    }
+
+    public void refreshPlayers(OnlinePlayerService onlinePlayerService) {
+        List<EntityPlayer> refreshedPlayers = new ArrayList<>();
+        for (EntityPlayer player : players) {
+            String playerName = player.getName();
+            try {
+                refreshedPlayers.add(onlinePlayerService.getPlayerByUsername(playerName));
+            } catch (OnlinePlayerNotFoundException e) {
+                //Keep the old object because the player is offline
+                refreshedPlayers.add(player);
+            }
+        }
+        players = refreshedPlayers;
     }
 }
