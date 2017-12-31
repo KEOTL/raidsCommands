@@ -121,8 +121,14 @@ public class Party {
             } catch (OnlinePlayerNotFoundException e) {
                 //Keep the old object because the player is offline
                 refreshedPlayers.add(player);
+            } catch (NullPointerException e) {
+                // Skip the corrupted player
             }
         }
         players = refreshedPlayers;
+    }
+
+    public boolean isPlayerInParty(String name) {
+        return players.stream().map(EntityPlayer::getName).collect(Collectors.toList()).contains(name);
     }
 }

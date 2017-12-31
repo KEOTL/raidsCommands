@@ -2,6 +2,7 @@ package com.lambdanum.raids.raid.controller;
 
 import com.lambdanum.raids.application.LootService;
 import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.application.RaidExitService;
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.DebugMcLogger;
@@ -13,6 +14,7 @@ import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldServer;
@@ -24,6 +26,7 @@ public class RaidController {
     private final PlayerTeleportService teleportService = ComponentLocator.INSTANCE.get(PlayerTeleportService.class);
     private final MinecraftServer minecraftServer = ComponentLocator.INSTANCE.get(MinecraftServer.class);
     private final LootService lootService = ComponentLocator.INSTANCE.get(LootService.class);
+    private final RaidExitService raidExitService = ComponentLocator.INSTANCE.get(RaidExitService.class);
 
     private Raid raid;
     private final int dimension;
@@ -110,6 +113,15 @@ public class RaidController {
         if (!raidPartyRepository.contains(party)) {
             party = Party.EMPTY_PARTY;
             logger.log("raid controller on dimension " + dimension + " is inconsistent with PartyRepository. Forcing empty party.");
+        }
+        kickPlayersThatAreInTheRaidButOutsideTheParty();
+    }
+
+    private void kickPlayersThatAreInTheRaidButOutsideTheParty() {
+        for (EntityPlayer player : minecraftServer.getWorld(dimension).getPlayers(EntityPlayer.class, input -> true)) {
+            if (!party.isPlayerInParty(player.getName())) {
+                raidExitService.sendPlayerHome(player);
+            }
         }
     }
 }
