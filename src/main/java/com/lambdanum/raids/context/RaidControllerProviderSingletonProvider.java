@@ -2,18 +2,18 @@ package com.lambdanum.raids.context;
 
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
 import com.lambdanum.raids.infrastructure.injection.RuntimeProvider;
-import com.lambdanum.raids.raid.controller.RaidControllerProvider;
+import com.lambdanum.raids.raid.controller.RaidControllerRepository;
 import com.lambdanum.raids.raid.controller.RaidRepository;
 
-public class RaidControllerProviderSingletonProvider implements RuntimeProvider<RaidControllerProvider> {
+public class RaidControllerProviderSingletonProvider implements RuntimeProvider<RaidControllerRepository> {
 
-    private RaidControllerProvider raidControllerProvider;
+    private RaidControllerRepository raidControllerRepository;
 
     @Override
-    public RaidControllerProvider get() {
-        if (raidControllerProvider == null) {
-            raidControllerProvider = new RaidControllerProvider(ComponentLocator.INSTANCE.get(RaidRepository.class));
+    public RaidControllerRepository get() {
+        if (raidControllerRepository == null) {
+            raidControllerRepository = new RaidControllerRepository(ComponentLocator.INSTANCE.get(RaidRepository.class));
         }
-        return raidControllerProvider;
+        return raidControllerRepository;
     }
 }

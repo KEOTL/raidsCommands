@@ -16,8 +16,9 @@ public class InMemoryRaidRepositoryGarbageCollector implements Runnable {
     public void run() {
         while (!shouldStop.get()) {
             inMemoryRaidPartyRepository.deleteEmptyParties();
+            inMemoryRaidPartyRepository.refreshParties();
             try {
-                Thread.sleep(10000L);
+                Thread.sleep(1000L);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

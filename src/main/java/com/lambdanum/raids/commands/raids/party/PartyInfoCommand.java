@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -42,10 +43,13 @@ public class PartyInfoCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        sender.sendMessage(new TextComponentString("§7" + "Currently in your party :"));
+        if (!raidPartyService.isPlayerInAParty(sender.getName())) {
+            throw new CommandException("You are not in a party!");
+        }
+        sender.sendMessage(new TextComponentString("§6" + "Currently in your party :"));
         for (String member : raidPartyService.getPartyMembers(sender.getName())) {
             if (onlinePlayerService.isPlayerOnline(member)) {
-                sender.sendMessage(new TextComponentString("§7" + member));
+                sender.sendMessage(new TextComponentString("§6" + member));
             } else {
                 sender.sendMessage(new TextComponentString("§c" + member + "(Offline)"));
             }
@@ -54,7 +58,7 @@ public class PartyInfoCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return raidPartyService.isPlayerInAParty(sender.getName());
+        return sender instanceof EntityPlayer;
     }
 
     @Override

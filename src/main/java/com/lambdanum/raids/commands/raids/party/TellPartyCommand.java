@@ -41,6 +41,9 @@ public class TellPartyCommand implements ICommand {
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        if (args.length < 1) {
+            throw new CommandException(getUsage(sender));
+        }
         String message = StringUtils.join(args, " ");
         try {
             raidPartyService.tellParty(sender.getName(), message);

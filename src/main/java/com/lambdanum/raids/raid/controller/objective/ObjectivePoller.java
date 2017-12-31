@@ -29,7 +29,7 @@ public abstract class ObjectivePoller implements Runnable {
     public void run() {
         while (!isConditionMet() && !shouldStop.get()) {
             try {
-                Thread.sleep(1000L);
+                Thread.sleep(500L);
             } catch (InterruptedException e) {
                 // Ignored
             }
