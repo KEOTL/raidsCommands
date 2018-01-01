@@ -1,6 +1,7 @@
 package com.lambdanum.raids.commands.raids.party;
 
 import com.lambdanum.raids.application.RaidPartyService;
+import com.lambdanum.raids.application.RaidService;
 import com.lambdanum.raids.raid.controller.party.OnlinePlayerNotFoundException;
 import com.lambdanum.raids.raid.controller.party.PlayerAlreadyInAPartyException;
 
@@ -19,9 +20,11 @@ import net.minecraft.util.math.BlockPos;
 public class PartyInviteCommand implements ICommand {
 
     private RaidPartyService raidPartyService;
+    private RaidService raidService;
 
-    public PartyInviteCommand(RaidPartyService raidPartyService) {
+    public PartyInviteCommand(RaidPartyService raidPartyService, RaidService raidService) {
         this.raidPartyService = raidPartyService;
+        this.raidService = raidService;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class PartyInviteCommand implements ICommand {
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return raidPartyService.isPlayerInAParty(sender.getName()) && sender instanceof EntityPlayer;
+        return raidPartyService.isPlayerInAParty(sender.getName()) && sender instanceof EntityPlayer && !raidService.isInARaid(sender);
     }
 
     @Override
