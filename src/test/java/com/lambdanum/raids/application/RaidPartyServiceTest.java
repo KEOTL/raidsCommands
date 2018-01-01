@@ -16,7 +16,7 @@ public class RaidPartyServiceTest {
     @Mock
     private RaidPartyRepository partyRepository;
     @Mock
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
     @Mock
     private PlayerHomeService homeService;
 

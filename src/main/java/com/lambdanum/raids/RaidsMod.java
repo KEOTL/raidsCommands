@@ -1,6 +1,8 @@
 package com.lambdanum.raids;
 
+import com.lambdanum.raids.application.QuestItemCleaningService;
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
+import com.lambdanum.raids.infrastructure.watchdog.QuestItemCleaningWatchdog;
 
 import net.minecraft.command.ICommand;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,5 +26,6 @@ public class RaidsMod {
         for (ICommand command :locator.getAllChildren(ICommand.class)) {
             event.registerServerCommand(command);
         }
+        new Thread(new QuestItemCleaningWatchdog(locator.get(QuestItemCleaningService.class))).start();
     }
 }

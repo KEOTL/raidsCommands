@@ -1,6 +1,13 @@
 package com.lambdanum.raids.context;
 
-import com.lambdanum.raids.application.*;
+import com.lambdanum.raids.application.LootService;
+import com.lambdanum.raids.application.PlayerHomeService;
+import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.application.QuestItemCleaningService;
+import com.lambdanum.raids.application.RaidExitService;
+import com.lambdanum.raids.application.RaidPartyService;
+import com.lambdanum.raids.application.RaidService;
+import com.lambdanum.raids.application.SkyblockService;
 import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
 import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
@@ -9,6 +16,7 @@ import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.raid.controller.RaidPlayDimensionRepository;
@@ -34,7 +42,7 @@ public class MainBinder extends AbstractBinder {
         bind(PlayerHomeService.class).to(PlayerHomeService.class);
         bind(RestPlayerHomeRepository.class).to(PlayerHomeRepository.class);
         bind(LootService.class).to(LootService.class);
-        bind(OnlinePlayerService.class).to(OnlinePlayerService.class);
+        bind(OnlinePlayerRepository.class).to(OnlinePlayerRepository.class);
         bind(SkyblockService.class).to(SkyblockService.class);
         bind(IslandGenerationStrategy.class).to(IslandGenerationStrategy.class);
         bind(RestSkyblockUserRepository.class).to(SkyblockUserRepository.class);

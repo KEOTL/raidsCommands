@@ -1,8 +1,8 @@
 package com.lambdanum.raids.raid.controller.party;
 
-import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.application.PlayerTeleportService;
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.model.LootItem;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.model.Raid;
@@ -25,7 +25,7 @@ public class Party {
 
     public static final Party EMPTY_PARTY = new Party(Collections.emptyList());
 
-    private final OnlinePlayerService onlinePlayerService = ComponentLocator.INSTANCE.get(OnlinePlayerService.class);
+    private final OnlinePlayerRepository onlinePlayerRepository = ComponentLocator.INSTANCE.get(OnlinePlayerRepository.class);
 
     private List<EntityPlayer> players;
 
@@ -83,11 +83,11 @@ public class Party {
     }
 
     public boolean isEmpty() {
-        return players.stream().filter(Objects::nonNull).filter(player -> onlinePlayerService.isPlayerOnline(player.getName())).collect(Collectors.toList()).isEmpty();
+        return players.stream().filter(Objects::nonNull).filter(player -> onlinePlayerRepository.isPlayerOnline(player.getName())).collect(Collectors.toList()).isEmpty();
     }
 
     public boolean hasAppropriatePlayerCount(Raid raid) {
-        long playerCount = players.stream().filter(player -> onlinePlayerService.isPlayerOnline(player.getName())).count();
+        long playerCount = players.stream().filter(player -> onlinePlayerRepository.isPlayerOnline(player.getName())).count();
         return playerCount >= raid.minPlayers && playerCount <= raid.maxPlayers;
     }
 
@@ -112,12 +112,12 @@ public class Party {
             .map(ResourceLocation::toString).anyMatch(carriedItem -> !allowedItems.contains(carriedItem) && !"minecraft:air".equals(carriedItem));
     }
 
-    public void refreshPlayers(OnlinePlayerService onlinePlayerService) {
+    public void refreshPlayers(OnlinePlayerRepository onlinePlayerRepository) {
         List<EntityPlayer> refreshedPlayers = new ArrayList<>();
         for (EntityPlayer player : players) {
             String playerName = player.getName();
             try {
-                refreshedPlayers.add(onlinePlayerService.getPlayerByUsername(playerName));
+                refreshedPlayers.add(onlinePlayerRepository.getPlayerByUsername(playerName));
             } catch (OnlinePlayerNotFoundException e) {
                 //Keep the old object because the player is offline
                 refreshedPlayers.add(player);

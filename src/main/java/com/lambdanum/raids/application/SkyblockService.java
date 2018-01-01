@@ -1,5 +1,6 @@
 package com.lambdanum.raids.application;
 
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.model.Position;
 import com.lambdanum.raids.skyblock.IslandGenerationStrategy;
 import com.lambdanum.raids.skyblock.SkyblockUserRepository;
@@ -12,21 +13,21 @@ public class SkyblockService {
     private LootService lootService;
     private PlayerHomeService homeService;
     private IslandGenerationStrategy islandGenerationStrategy;
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
     private SkyblockUserRepository skyblockUserRepository;
 
-    public SkyblockService(LootService lootService, PlayerHomeService homeService, IslandGenerationStrategy islandGenerationStrategy, OnlinePlayerService onlinePlayerService, SkyblockUserRepository skyblockUserRepository) {
+    public SkyblockService(LootService lootService, PlayerHomeService homeService, IslandGenerationStrategy islandGenerationStrategy, OnlinePlayerRepository onlinePlayerRepository, SkyblockUserRepository skyblockUserRepository) {
         this.lootService = lootService;
         this.homeService = homeService;
         this.islandGenerationStrategy = islandGenerationStrategy;
-        this.onlinePlayerService = onlinePlayerService;
+        this.onlinePlayerRepository = onlinePlayerRepository;
         this.skyblockUserRepository = skyblockUserRepository;
     }
 
     public void asyncSetupPlayerIsland(String playerName, Position playerPosition) {
         new Thread(() -> {
             islandGenerationStrategy.generateIsland(playerPosition);
-            EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
+            EntityPlayer player = onlinePlayerRepository.getPlayerByUsername(playerName);
             player.setGameType(GameType.SURVIVAL);
             player.setPosition(playerPosition.x, playerPosition.y + 2, playerPosition.z);
             lootService.distributeLoot(playerName, "startup");
