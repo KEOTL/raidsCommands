@@ -1,13 +1,6 @@
 package com.lambdanum.raids.context;
 
-import com.lambdanum.raids.application.LootService;
-import com.lambdanum.raids.application.OnlinePlayerService;
-import com.lambdanum.raids.application.PlayerHomeService;
-import com.lambdanum.raids.application.PlayerTeleportService;
-import com.lambdanum.raids.application.RaidExitService;
-import com.lambdanum.raids.application.RaidPartyService;
-import com.lambdanum.raids.application.RaidService;
-import com.lambdanum.raids.application.SkyblockService;
+import com.lambdanum.raids.application.*;
 import com.lambdanum.raids.commands.raids.RaidObjectiveCommand;
 import com.lambdanum.raids.home.PlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
@@ -50,6 +43,7 @@ public class MainBinder extends AbstractBinder {
         bind(RaidObjectiveAbstractFactory.class).to(RaidObjectiveAbstractFactory.class);
         bind(RaidExitService.class).to(RaidExitService.class);
         bind(RaidPartyService.class).to(RaidPartyService.class);
+        bind(QuestItemCleaningService.class).to(QuestItemCleaningService.class);
 
         bind(SingleDedicatedPlayDimensionRepository.class).to(RaidPlayDimensionRepository.class);
         install(UtilBinder.class);
