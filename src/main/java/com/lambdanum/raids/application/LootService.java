@@ -1,6 +1,7 @@
 package com.lambdanum.raids.application;
 
 import com.lambdanum.raids.loot.LootTableProvider;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.model.LootItem;
 import com.lambdanum.raids.model.Raid;
 import com.lambdanum.raids.raid.controller.party.Party;
@@ -14,12 +15,12 @@ import net.minecraft.item.ItemStack;
 public class LootService {
 
     private LootTableProvider lootTableProvider;
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
     private TeamLootStrategyProvider lootStrategyProvider;
 
-    public LootService(LootTableProvider lootTableProvider, OnlinePlayerService onlinePlayerService, TeamLootStrategyProvider lootStrategyProvider) {
+    public LootService(LootTableProvider lootTableProvider, OnlinePlayerRepository onlinePlayerRepository, TeamLootStrategyProvider lootStrategyProvider) {
         this.lootTableProvider = lootTableProvider;
-        this.onlinePlayerService = onlinePlayerService;
+        this.onlinePlayerRepository = onlinePlayerRepository;
         this.lootStrategyProvider = lootStrategyProvider;
     }
 
@@ -28,7 +29,7 @@ public class LootService {
     }
 
     public void distributeLoot(String playerName, String tableName) {
-        EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
+        EntityPlayer player = onlinePlayerRepository.getPlayerByUsername(playerName);
         for (LootItem item : lootTableProvider.roll(tableName, player.getName())) {
             player.addItemStackToInventory(new ItemStack(Item.getByNameOrId(item.minecraftId), item.amount));
         }

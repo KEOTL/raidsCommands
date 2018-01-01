@@ -2,6 +2,7 @@ package com.lambdanum.raids.application;
 
 import static org.mockito.Mockito.verify;
 
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class RaidPartyServiceTest {
     @Mock
     private RaidPartyRepository partyRepository;
     @Mock
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
     @Mock
     private PlayerHomeService homeService;
 

@@ -1,5 +1,6 @@
 package com.lambdanum.raids.application;
 
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.raid.controller.party.Party;
 import com.lambdanum.raids.raid.controller.party.PlayerAlreadyInAPartyException;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
@@ -11,13 +12,13 @@ import net.minecraft.entity.player.EntityPlayer;
 public class RaidPartyService {
 
     private RaidPartyRepository partyRepository;
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
     private RaidService raidService;
     private RaidExitService raidExitService;
 
-    public RaidPartyService(RaidPartyRepository partyRepository, OnlinePlayerService onlinePlayerService, RaidService raidService, RaidExitService raidExitService) {
+    public RaidPartyService(RaidPartyRepository partyRepository, OnlinePlayerRepository onlinePlayerRepository, RaidService raidService, RaidExitService raidExitService) {
         this.partyRepository = partyRepository;
-        this.onlinePlayerService = onlinePlayerService;
+        this.onlinePlayerRepository = onlinePlayerRepository;
         this.raidService = raidService;
         this.raidExitService = raidExitService;
     }
@@ -29,7 +30,7 @@ public class RaidPartyService {
     public void removePlayerFromTheirParty(String playerName) {
         Party party = partyRepository.getPlayerParty(playerName);
         party.removePlayer(playerName);
-        EntityPlayer player = onlinePlayerService.getPlayerByUsername(playerName);
+        EntityPlayer player = onlinePlayerRepository.getPlayerByUsername(playerName);
         if (raidService.isInARaid(player)) {
             raidExitService.sendPlayerHome(player);
         }
@@ -54,7 +55,7 @@ public class RaidPartyService {
             throw new PlayerAlreadyInAPartyException();
         }
         Party hostParty = partyRepository.getPlayerParty(hostPlayer);
-        EntityPlayer invitee = onlinePlayerService.getPlayerByUsername(invitedPlayer);
+        EntityPlayer invitee = onlinePlayerRepository.getPlayerByUsername(invitedPlayer);
 
         hostParty.addPlayer(invitee);
     }

@@ -1,7 +1,7 @@
 package com.lambdanum.raids.commands.raids.party;
 
-import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.application.RaidPartyService;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,11 +19,11 @@ import net.minecraft.util.text.TextComponentString;
 public class PartyInfoCommand implements ICommand {
 
     private RaidPartyService raidPartyService;
-    private OnlinePlayerService onlinePlayerService;
+    private OnlinePlayerRepository onlinePlayerRepository;
 
-    public PartyInfoCommand(RaidPartyService raidPartyService, OnlinePlayerService onlinePlayerService) {
+    public PartyInfoCommand(RaidPartyService raidPartyService, OnlinePlayerRepository onlinePlayerRepository) {
         this.raidPartyService = raidPartyService;
-        this.onlinePlayerService = onlinePlayerService;
+        this.onlinePlayerRepository = onlinePlayerRepository;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class PartyInfoCommand implements ICommand {
         }
         sender.sendMessage(new TextComponentString("§6" + "Currently in your party :"));
         for (String member : raidPartyService.getPartyMembers(sender.getName())) {
-            if (onlinePlayerService.isPlayerOnline(member)) {
+            if (onlinePlayerRepository.isPlayerOnline(member)) {
                 sender.sendMessage(new TextComponentString("§6" + member));
             } else {
                 sender.sendMessage(new TextComponentString("§c" + member + "(Offline)"));

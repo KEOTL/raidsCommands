@@ -1,9 +1,9 @@
 package com.lambdanum.raids.context;
 
 import com.lambdanum.raids.application.LootService;
-import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.application.PlayerHomeService;
 import com.lambdanum.raids.application.PlayerTeleportService;
+import com.lambdanum.raids.application.QuestItemCleaningService;
 import com.lambdanum.raids.application.RaidExitService;
 import com.lambdanum.raids.application.RaidPartyService;
 import com.lambdanum.raids.application.RaidService;
@@ -16,6 +16,7 @@ import com.lambdanum.raids.infrastructure.persistence.RestPlayerHomeRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestRaidRepository;
 import com.lambdanum.raids.infrastructure.persistence.RestSkyblockUserRepository;
 import com.lambdanum.raids.infrastructure.utils.minecraft.MinecraftServerProvider;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerRepository;
 import com.lambdanum.raids.raid.controller.RaidControllerWatchdog;
 import com.lambdanum.raids.raid.controller.RaidPlayDimensionRepository;
@@ -41,7 +42,7 @@ public class MainBinder extends AbstractBinder {
         bind(PlayerHomeService.class).to(PlayerHomeService.class);
         bind(RestPlayerHomeRepository.class).to(PlayerHomeRepository.class);
         bind(LootService.class).to(LootService.class);
-        bind(OnlinePlayerService.class).to(OnlinePlayerService.class);
+        bind(OnlinePlayerRepository.class).to(OnlinePlayerRepository.class);
         bind(SkyblockService.class).to(SkyblockService.class);
         bind(IslandGenerationStrategy.class).to(IslandGenerationStrategy.class);
         bind(RestSkyblockUserRepository.class).to(SkyblockUserRepository.class);
@@ -50,6 +51,7 @@ public class MainBinder extends AbstractBinder {
         bind(RaidObjectiveAbstractFactory.class).to(RaidObjectiveAbstractFactory.class);
         bind(RaidExitService.class).to(RaidExitService.class);
         bind(RaidPartyService.class).to(RaidPartyService.class);
+        bind(QuestItemCleaningService.class).to(QuestItemCleaningService.class);
 
         bind(SingleDedicatedPlayDimensionRepository.class).to(RaidPlayDimensionRepository.class);
         install(UtilBinder.class);

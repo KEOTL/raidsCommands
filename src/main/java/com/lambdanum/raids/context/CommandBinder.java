@@ -7,10 +7,7 @@ import com.lambdanum.raids.commands.HomeCommand;
 import com.lambdanum.raids.commands.LootCommand;
 import com.lambdanum.raids.commands.SetHomeCommand;
 import com.lambdanum.raids.commands.VisitCommand;
-import com.lambdanum.raids.commands.raids.DefeatCommand;
-import com.lambdanum.raids.commands.raids.ExitRaidCommand;
-import com.lambdanum.raids.commands.raids.StartRaidCommand;
-import com.lambdanum.raids.commands.raids.VictoryCommand;
+import com.lambdanum.raids.commands.raids.*;
 import com.lambdanum.raids.commands.raids.party.PartyCreateCommand;
 import com.lambdanum.raids.commands.raids.party.PartyInfoCommand;
 import com.lambdanum.raids.commands.raids.party.PartyInviteCommand;
@@ -38,5 +35,6 @@ public class CommandBinder extends AbstractBinder {
         bind(PartyInviteCommand.class).to(PartyInviteCommand.class);
         bind(PartyLeaveCommand.class).to(PartyLeaveCommand.class);
         bind(TellPartyCommand.class).to(TellPartyCommand.class);
+        bind(GiveQuestItemCommand.class).to(GiveQuestItemCommand.class);
     }
 }

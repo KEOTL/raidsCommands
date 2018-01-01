@@ -1,7 +1,7 @@
 package com.lambdanum.raids.infrastructure.persistence;
 
-import com.lambdanum.raids.application.OnlinePlayerService;
 import com.lambdanum.raids.infrastructure.injection.ComponentLocator;
+import com.lambdanum.raids.minecraft.OnlinePlayerRepository;
 import com.lambdanum.raids.raid.controller.party.Party;
 import com.lambdanum.raids.raid.controller.party.RaidPartyRepository;
 
@@ -66,9 +66,9 @@ public class InMemoryRaidPartyRepository implements RaidPartyRepository {
         }
     }
     public void refreshParties() {
-        OnlinePlayerService onlinePlayerService = ComponentLocator.INSTANCE.get(OnlinePlayerService.class);
+        OnlinePlayerRepository onlinePlayerRepository = ComponentLocator.INSTANCE.get(OnlinePlayerRepository.class);
         for (Party party : teams) {
-            party.refreshPlayers(onlinePlayerService);
+            party.refreshPlayers(onlinePlayerRepository);
         }
     }
 }
