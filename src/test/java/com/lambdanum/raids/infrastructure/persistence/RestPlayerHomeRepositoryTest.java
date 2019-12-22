@@ -28,8 +28,7 @@ public class RestPlayerHomeRepositoryTest {
 
     @Before
     public void initializeRepository() {
-        ServerProperties properties = new ServerProperties();
-        properties.serverUrl = SERVER_URL;
+        ServerProperties properties = new ServerProperties(SERVER_URL);
         homeRepository = new RestPlayerHomeRepository(httpHelper, properties);
     }
 

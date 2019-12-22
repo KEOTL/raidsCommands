@@ -28,8 +28,7 @@ public class RestSkyblockUserRepositoryTest {
 
     @Before
     public void initialize() {
-        ServerProperties serverProperties = new ServerProperties();
-        serverProperties.serverUrl = SERVER_URL;
+        ServerProperties serverProperties = new ServerProperties(SERVER_URL);
         skyblockUserRepository = new RestSkyblockUserRepository(httpHelper, serverProperties);
         user = new User();
         user.generatedIsland = true;

@@ -10,9 +10,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = "raids", version = "0.0.4", acceptableRemoteVersions = "*")
+@Mod(modid = RaidsMod.MODID, version = "0.0.5", acceptableRemoteVersions = "*")
 @Mod.EventBusSubscriber
 public class RaidsMod {
+
+    public static final String MODID = "raids";
 
     private ComponentLocator locator = ComponentLocator.INSTANCE;
 

@@ -2,7 +2,10 @@ package com.lambdanum.raids.context;
 
 import com.google.gson.Gson;
 import com.lambdanum.raids.HttpHelper;
+import com.lambdanum.raids.RaidsMod;
+import com.lambdanum.raids.RaidsModConfig;
 import com.lambdanum.raids.context.config.ServerProperties;
+import com.lambdanum.raids.context.config.ServerPropertiesProvider;
 import com.lambdanum.raids.infrastructure.injection.AbstractBinder;
 import com.lambdanum.raids.infrastructure.injection.McLogger;
 import com.lambdanum.raids.infrastructure.utils.minecraft.DebugMcLogger;
@@ -17,7 +20,7 @@ public class UtilBinder extends AbstractBinder {
         bind(RegionCloner.class).to(RegionCloner.class);
         bind(Gson.class).to(Gson.class);
         bind(HttpHelper.class).to(HttpHelper.class);
-        bind(ServerProperties.class).to(ServerProperties.class);
+        bind(new ServerPropertiesProvider()).to(ServerProperties.class);
         bind(NestedCommandParser.class).to(NestedCommandParser.class);
 
         bind(MinecraftBroadcastLogger.class).to(MinecraftBroadcastLogger.class);

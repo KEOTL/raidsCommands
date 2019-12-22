@@ -29,8 +29,7 @@ public class RestLootTableProviderTest {
 
     @Before
     public void initialize() {
-        ServerProperties serverProperties = new ServerProperties();
-        serverProperties.serverUrl = SERVER_URL;
+        ServerProperties serverProperties = new ServerProperties(SERVER_URL);
         lootTableProvider = new RestLootTableProvider(httpHelper, serverProperties);
     }
 
