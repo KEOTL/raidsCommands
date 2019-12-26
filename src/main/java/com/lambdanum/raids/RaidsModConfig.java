@@ -11,6 +11,8 @@ public class RaidsModConfig {
 
   public static String HELPER_URL = "https://boiling-forest-57763.herokuapp.com";
 
+  public static boolean CAN_TELEPORT_HOME_FROM_ANY_DIMENSION = true;
+
   @Mod.EventBusSubscriber
   private static class EventHandler {
     @SubscribeEvent
