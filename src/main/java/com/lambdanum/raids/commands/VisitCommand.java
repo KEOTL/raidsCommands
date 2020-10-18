@@ -49,7 +49,7 @@ public class VisitCommand implements ICommand {
         EntityPlayer player = (EntityPlayer) sender;
         if (args.length == 1) {
             Position otherPlayerHome = homeRepository.getPlayerHome(args[0]);
-            teleportService.teleportPlayer(player, otherPlayerHome);
+            teleportService.teleportPlayerToDimension(player, 0,otherPlayerHome);
         }
     }
 

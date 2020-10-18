@@ -18,7 +18,7 @@ public class PlayerHomeService {
 
     public void teleportPlayerToHome(EntityPlayer player) {
         Position playerHome = homeRepository.getPlayerHome(player.getName());
-        teleportService.teleportPlayer(player, playerHome);
+        teleportService.teleportPlayerToDimension(player,0 ,playerHome);
         player.setGameType(GameType.SURVIVAL);
     }
 
